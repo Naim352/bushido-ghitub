@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUSHIDO STORE — Arts Martiaux & Combat</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+:root{
+  --gold:#C9A84C;--gold-l:#E8C97A;--gold-d:#8B6914;
+  --dark:#080808;--dark2:#101010;--dark3:#181818;--dark4:#222;
+  --light:#EEEEEE;--white:#fff;--muted:#777;
+  --red:#C0392B;--green:#27ae60;
+  --border:rgba(201,168,76,.2);--border2:rgba(201,168,76,.5);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--light);font-family:'Barlow',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--dark2)}
+::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:3px}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .7s,visibility .7s}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.ld-logo{font-family:'Bebas Neue',sans-serif;font-size:80px;color:var(--gold);letter-spacing:10px;animation:ldp 1.4s ease-in-out infinite}
+.ld-sub{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:6px;color:var(--muted);margin-top:4px;text-transform:uppercase}
+.ld-bar{width:220px;height:2px;background:var(--dark3);margin-top:48px;border-radius:2px;overflow:hidden}
+.ld-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold),var(--gold-l));width:0;animation:ldf 2.3s ease forwards}
+@keyframes ldf{to{width:100%}}
+@keyframes ldp{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:1000;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(8,8,8,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:height .3s}
+header.sc{height:54px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:4px;color:var(--gold);cursor:pointer;text-decoration:none}
+.logo em{color:var(--white);font-style:normal}
+nav{display:flex;gap:26px;align-items:center}
+nav a{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .2s;border:none;background:none;padding:0}
+nav a:hover,nav a.on{color:var(--gold)}
+.hdr-r{display:flex;align-items:center;gap:11px}
+.srch-w{position:relative;display:flex;align-items:center}
+.srch-i{width:0;opacity:0;background:var(--dark3);border:1px solid var(--border);color:var(--white);padding:7px 34px 7px 12px;border-radius:4px;font-family:'Barlow',sans-serif;font-size:13px;outline:none;transition:width .4s,opacity .3s}
+.srch-i.open{width:190px;opacity:1}
+.srch-i::placeholder{color:var(--muted)}
+.srch-b{position:absolute;right:8px;background:none;border:none;color:var(--gold);cursor:pointer;font-size:17px}
+.ibtn{background:none;border:1px solid var(--border);color:var(--light);width:36px;height:36px;border-radius:4px;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;transition:all .2s;position:relative}
+.ibtn:hover{border-color:var(--gold);color:var(--gold)}
+.bdg{position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;font-size:9px;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.btn-cnx{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:7px 16px;border-radius:3px;cursor:pointer;transition:all .2s}
+.btn-cnx:hover{background:var(--gold);color:var(--dark)}
+
+/* SECTIONS */
+section{display:none}
+section.active{display:block}
+.ptop{padding-top:68px}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 15% 50%,rgba(201,168,76,.07) 0%,transparent 55%),radial-gradient(ellipse at 85% 20%,rgba(192,57,43,.05) 0%,transparent 50%)}
+.hero-lines{position:absolute;inset:0;opacity:.035;background-image:linear-gradient(var(--gold) 1px,transparent 1px),linear-gradient(90deg,var(--gold) 1px,transparent 1px);background-size:64px 64px}
+.hero-c{position:relative;text-align:center;max-width:960px;padding:0 24px}
+.h-eye{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:flex;align-items:center;justify-content:center;gap:14px}
+.h-eye::before,.h-eye::after{content:'';width:44px;height:1px;background:var(--gold);opacity:.5}
+.h-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,11vw,140px);line-height:.88;letter-spacing:6px;color:var(--white);margin-bottom:10px}
+.h-title .g{color:var(--gold)}
+.h-sub{font-family:'Barlow Condensed',sans-serif;font-size:clamp(13px,2vw,17px);letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:44px}
+.h-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-p{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;background:var(--gold);color:var(--dark);padding:14px 38px;border:none;border-radius:3px;cursor:pointer;font-weight:700;transition:all .25s}
+.btn-p:hover{background:var(--gold-l);transform:translateY(-2px)}
+.btn-g{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;background:transparent;color:var(--light);padding:14px 38px;border:1px solid rgba(255,255,255,.2);border-radius:3px;cursor:pointer;font-weight:600;transition:all .25s}
+.btn-g:hover{border-color:var(--gold);color:var(--gold)}
+.h-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer}
+.h-scroll span{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:sb 1.6s ease-in-out infinite}
+@keyframes sb{0%,100%{transform:translateY(0)}50%{transform:translateY(9px)}}
+
+/* PROMO BAR */
+.promo-bar{background:var(--red);text-align:center;padding:11px 24px;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;position:relative}
+.promo-bar .code{background:rgba(0,0,0,.25);padding:2px 8px;border-radius:2px;margin:0 4px;font-weight:700}
+.pbc{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;cursor:pointer;font-size:18px;opacity:.7}
+.pbc:hover{opacity:1}
+
+/* FEATURES */
+.feat-strip{background:var(--dark3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 40px}
+.feat-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:20px;max-width:1100px;margin:0 auto}
+.feat-i{display:flex;align-items:center;gap:12px}
+.feat-h{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white);letter-spacing:.5px;margin-bottom:2px}
+.feat-s{font-size:12px;color:var(--muted)}
+
+/* SECTION HEAD */
+.sh{text-align:center;padding:56px 40px 36px}
+.ey{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;display:block}
+.st{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,5vw,54px);color:var(--white);letter-spacing:3px}
+
+/* CATEGORIES */
+.cat-strip{background:var(--dark2);border-bottom:1px solid var(--border);padding:20px 40px}
+.cat-list{display:flex;gap:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.cat-list::-webkit-scrollbar{display:none}
+.cat-pill{flex-shrink:0;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:9px 18px;border:1px solid var(--border);border-radius:40px;cursor:pointer;transition:all .2s;color:var(--muted);background:transparent;white-space:nowrap}
+.cat-pill:hover,.cat-pill.on{background:var(--gold);color:var(--dark);border-color:var(--gold);font-weight:700}
+
+/* PRODUCTS */
+.ps{background:var(--dark);padding-bottom:60px}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:18px;padding:0 40px;max-width:1380px;margin:0 auto}
+.pc{background:var(--dark2);border:1px solid var(--border);border-radius:6px;overflow:hidden;cursor:pointer;transition:all .3s;position:relative}
+.pc:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 18px 44px rgba(0,0,0,.55)}
+.pi{position:relative;height:230px;background:var(--dark3);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pc:hover .pi img{transform:scale(1.06)}
+.pb{position:absolute;top:11px;left:11px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;padding:4px 9px;border-radius:3px;text-transform:uppercase;font-weight:700;z-index:2}
+.b-new{background:var(--gold);color:var(--dark)}
+.b-promo{background:var(--red);color:#fff}
+.b-hot{background:#E67E22;color:#fff}
+.pfav{position:absolute;top:11px;right:11px;background:rgba(8,8,8,.65);border:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;transition:all .2s;z-index:2}
+.pfav:hover,.pfav.liked{background:var(--red)}
+.pinfo{padding:14px 16px 16px}
+.pcat{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.pname{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--white);letter-spacing:.3px;margin-bottom:8px;line-height:1.2}
+.ppr{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.pprice{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold)}
+.pold{font-size:13px;color:var(--muted);text-decoration:line-through}
+.pstars{font-size:12px;color:var(--gold);margin-bottom:3px}
+.prev{font-size:11px;color:var(--muted);margin-bottom:10px}
+
+/* SIZE BUTTONS ON CARD */
+.szps-card{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.szp-card{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;padding:5px 11px;border:1px solid var(--border);border-radius:4px;cursor:pointer;transition:all .2s;background:transparent;color:var(--light)}
+.szp-card:hover{border-color:var(--gold);color:var(--gold)}
+.szp-card.sel{background:var(--gold);border-color:var(--gold);color:var(--dark)}
+
+.btn-sz{width:100%;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--light);padding:9px;border-radius:3px;cursor:pointer;transition:all .2s;font-weight:600}
+.btn-sz:hover{background:var(--gold);border-color:var(--gold);color:var(--dark)}
+
+/* PROMO CARDS */
+.promo-s{background:var(--dark2);padding:56px 40px}
+.promo-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;max-width:1160px;margin:0 auto}
+.proC{border-radius:6px;overflow:hidden;position:relative;min-height:190px;display:flex;align-items:flex-end;padding:26px;cursor:pointer;transition:transform .3s}
+.proC:hover{transform:scale(1.025)}
+.pc1{background:linear-gradient(135deg,#1a0a00,#3d1a00,#6b2800);border:1px solid rgba(201,168,76,.3)}
+.pc2{background:linear-gradient(135deg,#0a0a1a,#1a1a4a,#2a2a7a);border:1px solid rgba(100,100,255,.2)}
+.pc3{background:linear-gradient(135deg,#1a0000,#4a0000,#7a0000);border:1px solid rgba(200,50,50,.3)}
+.pc4{background:linear-gradient(135deg,#001a00,#003d00,#006b00);border:1px solid rgba(55,200,55,.2)}
+.pc5{background:linear-gradient(135deg,#1a0800,#3d1500,#6b3000);border:1px solid rgba(245,118,28,.3)}
+.pce{position:absolute;top:18px;right:18px;font-size:50px;opacity:.8}
+.pcl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.pct{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--white);letter-spacing:2px;margin-bottom:7px}
+.pcd{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:14px;line-height:1.5}
+.pcc{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+.pcc::after{content:' →'}
+
+/* PRODUCT MODAL */
+.mOv{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:3000;display:none;align-items:center;justify-content:center;padding:16px}
+.mOv.open{display:flex}
+.pmw{background:var(--dark2);border:1px solid var(--border);border-radius:10px;max-width:820px;width:100%;max-height:92vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;animation:fu .3s ease;position:relative}
+@keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.pm-l{background:var(--dark3);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px;border-right:1px solid var(--border);border-radius:10px 0 0 0;min-height:380px}
+.pm-em{font-size:100px;filter:drop-shadow(0 0 28px rgba(201,168,76,.28))}
+.pm-th{display:flex;gap:7px;margin-top:18px}
+.pm-t{width:44px;height:44px;background:var(--dark4);border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;transition:border-color .2s;overflow:hidden;padding:0}
+.pm-t.on,.pm-t:hover{border-color:var(--gold)}
+.pm-r{padding:28px;position:relative;overflow-y:auto}
+.pm-x{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;line-height:1;z-index:1}
+.pm-x:hover{color:var(--white)}
+.pmCat{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.pmNm{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);letter-spacing:2px;line-height:1.1;margin-bottom:7px}
+.pmSt{font-size:13px;color:var(--gold);margin-bottom:3px}
+.pmRv{font-size:11px;color:var(--muted);margin-bottom:14px}
+.pmPr{display:flex;align-items:baseline;gap:10px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.pmPrice{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--gold)}
+.pmOld{font-size:15px;color:var(--muted);text-decoration:line-through}
+.pmTag{font-family:'Barlow Condensed',sans-serif;font-size:11px;background:var(--red);color:#fff;padding:3px 7px;border-radius:3px}
+.pmDesc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.pm-sl{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.c-row{display:flex;gap:7px;margin-bottom:16px;flex-wrap:wrap}
+.cdot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.cdot.sel{border-color:var(--gold);transform:scale(1.18)}
+.cdot:hover{transform:scale(1.1)}
+.cnm{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--white);margin-bottom:12px}
+.sz-lr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sz-la{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.sgb{font-family:'Barlow Condensed',sans-serif;font-size:11px;color:var(--gold);background:none;border:none;cursor:pointer;text-decoration:underline}
+.szps{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px}
+.szp{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;padding:7px 13px;border:1px solid var(--border);border-radius:4px;cursor:pointer;transition:all .2s;background:transparent;color:var(--light);min-width:46px;text-align:center}
+.szp:hover{border-color:var(--gold);color:var(--gold)}
+.szp.sel{background:var(--gold);border-color:var(--gold);color:var(--dark)}
+.szp.out{opacity:.28;cursor:not-allowed;text-decoration:line-through}
+.szp.out:hover{border-color:var(--border);color:var(--light)}
+.szerr{font-size:11px;color:var(--red);margin-bottom:10px;display:none}
+.sgp{display:none;background:var(--dark3);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:14px}
+.sgp.open{display:block}
+.sgT{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gold);letter-spacing:2px;margin-bottom:10px}
+.sgtb{width:100%;border-collapse:collapse;font-size:11px}
+.sgtb th{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);padding:5px 8px;border-bottom:1px solid var(--border);text-align:left}
+.sgtb td{padding:5px 8px;border-bottom:1px solid rgba(255,255,255,.03);color:var(--light)}
+.sgtb tr:last-child td{border-bottom:none}
+.sgtb tr:hover td{background:rgba(201,168,76,.04)}
+.sgn{font-size:10px;color:var(--muted);margin-top:7px;font-style:italic}
+.pm-act{display:flex;gap:8px;margin-top:12px}
+.btn-pmc{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;text-transform:uppercase;background:var(--gold);color:var(--dark);padding:13px;border:none;border-radius:4px;cursor:pointer;font-weight:700;transition:all .2s}
+.btn-pmc:hover{background:var(--gold-l)}
+.btn-pmf{width:46px;background:transparent;border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:18px;transition:all .2s}
+.btn-pmf:hover,.btn-pmf.liked{border-color:var(--red);background:rgba(192,57,43,.12)}
+.pmch{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.pmchip{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;padding:4px 9px;background:var(--dark3);border:1px solid var(--border);border-radius:20px;color:var(--muted)}
+@media(max-width:620px){.pmw{grid-template-columns:1fr}.pm-l{border-right:none;border-bottom:1px solid var(--border);border-radius:10px 10px 0 0;min-height:180px}}
+
+/* SEARCH */
+.sd{position:fixed;top:68px;left:0;right:0;background:rgba(8,8,8,.97);border-bottom:1px solid var(--border);z-index:900;padding:20px 40px;display:none}
+.sd.open{display:block}
+.sdl{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.srg{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:10px;max-width:860px}
+.sri{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--dark2);border:1px solid var(--border);border-radius:4px;cursor:pointer;transition:border-color .2s}
+.sri:hover{border-color:var(--gold)}
+.sre{font-size:22px}
+.srn{font-family:'Barlow Condensed',sans-serif;font-size:12px;color:var(--white)}
+.srp{font-size:11px;color:var(--gold)}
+
+/* CART */
+.cart-s{background:var(--dark);min-height:100vh}
+.cw{max-width:1060px;margin:0 auto;padding:56px 24px;display:grid;grid-template-columns:1fr 320px;gap:28px}
+@media(max-width:860px){.cw{grid-template-columns:1fr}}
+.ctitle{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:3px;color:var(--white);margin-bottom:24px}
+.ci{display:flex;gap:14px;padding:18px 0;border-bottom:1px solid var(--border);align-items:center}
+.ci-img{width:76px;height:76px;background:var(--dark3);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0;border:1px solid var(--border);overflow:hidden;padding:0}
+.ci-nm{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:3px}
+.ci-mt{font-size:12px;color:var(--muted)}
+.ci-pr{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold)}
+.qc{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-top:8px}
+.qb{background:var(--dark3);border:none;color:var(--light);width:30px;height:30px;cursor:pointer;font-size:15px;transition:background .2s}
+.qb:hover{background:var(--gold);color:var(--dark)}
+.qn{width:36px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--white);background:transparent;border:none;outline:none}
+.ci-rm{background:none;border:none;color:var(--muted);cursor:pointer;font-size:17px;transition:color .2s;margin-left:auto;align-self:flex-start;padding:0}
+.ci-rm:hover{color:var(--red)}
+.osum{background:var(--dark2);border:1px solid var(--border);border-radius:6px;padding:22px;position:sticky;top:86px}
+.otitle{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;color:var(--white);margin-bottom:18px}
+.sr{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:13px;color:var(--muted)}
+.sr.total{border-top:1px solid var(--border);margin-top:10px;padding-top:14px;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--white)}
+.sr.total .amt{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--gold)}
+.pi-row{display:flex;gap:7px;margin:14px 0}
+.pi-i{flex:1;background:var(--dark3);border:1px solid var(--border);color:var(--white);padding:9px 11px;border-radius:4px;font-size:13px;outline:none;font-family:'Barlow',sans-serif}
+.pi-i:focus{border-color:var(--gold)}
+.btn-ap{background:var(--dark3);border:1px solid var(--border);color:var(--gold);padding:9px 13px;border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1px;transition:all .2s}
+.btn-ap:hover{background:var(--gold);color:var(--dark);border-color:var(--gold)}
+.btn-co{width:100%;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;background:var(--gold);color:var(--dark);padding:14px;border:none;border-radius:4px;cursor:pointer;font-weight:700;transition:all .2s;margin-top:14px}
+.btn-co:hover{background:var(--gold-l)}
+.sec-n{display:flex;justify-content:center;gap:6px;margin-top:12px;font-size:11px;color:var(--muted);align-items:center}
+
+/* CART DRAWER */
+.dov{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:2000;display:none;align-items:flex-start;justify-content:flex-end}
+.dov.open{display:flex}
+.cdw{background:var(--dark2);border-left:1px solid var(--border);width:360px;height:100%;padding:22px;overflow-y:auto;animation:si .3s ease}
+@keyframes si{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.dwh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)}
+.dwt{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px}
+.dwc{background:none;border:none;color:var(--muted);cursor:pointer;font-size:20px}
+.dwc:hover{color:var(--white)}
+
+/* INSCRIPTION */
+.ins-s{background:var(--dark);min-height:100vh}
+.ins-w{max-width:480px;margin:0 auto;padding:56px 24px}
+.ins-logo{font-family:'Bebas Neue',sans-serif;font-size:46px;color:var(--gold);letter-spacing:4px;text-align:center;margin-bottom:4px}
+.ins-tl{font-size:13px;color:var(--muted);text-align:center;margin-bottom:28px}
+.ftabs{display:flex;background:var(--dark2);border-radius:5px;overflow:hidden;margin-bottom:28px;border:1px solid var(--border)}
+.ftab{flex:1;padding:13px;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-align:center;cursor:pointer;background:transparent;border:none;color:var(--muted);transition:all .2s}
+.ftab.on{background:var(--gold);color:var(--dark);font-weight:700}
+.fb{display:none}.fb.on{display:block}
+.fg{margin-bottom:18px}
+.fl{display:block;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.fi{width:100%;background:var(--dark2);border:1px solid var(--border);color:var(--white);padding:12px 15px;border-radius:4px;font-family:'Barlow',sans-serif;font-size:14px;outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--gold)}
+.fi::placeholder{color:var(--muted)}
+.firow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fiw{position:relative}.fiw .fi{padding-right:38px}
+.fii{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--muted);cursor:pointer}
+.fch{display:flex;align-items:flex-start;gap:9px;margin-bottom:13px}
+.fch input[type=checkbox]{accent-color:var(--gold);margin-top:3px;flex-shrink:0}
+.fch label{font-size:13px;color:var(--muted);line-height:1.5;cursor:pointer}
+.fch a{color:var(--gold);text-decoration:none}
+.btn-sub{width:100%;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:3px;text-transform:uppercase;background:var(--gold);color:var(--dark);padding:15px;border:none;border-radius:4px;cursor:pointer;font-weight:700;transition:all .2s;margin-top:6px}
+.btn-sub:hover{background:var(--gold-l)}
+.fdiv{text-align:center;position:relative;margin:22px 0}
+.fdiv::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border)}
+.fdiv span{background:var(--dark);position:relative;padding:0 11px;font-size:11px;color:var(--muted)}
+.srow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-soc{padding:11px;border:1px solid var(--border);background:transparent;color:var(--light);border-radius:4px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:7px;transition:border-color .2s}
+.btn-soc:hover{border-color:var(--gold);color:var(--gold)}
+.swl{text-align:center;margin-top:18px;font-size:13px;color:var(--muted)}
+.swl a{color:var(--gold);cursor:pointer;font-weight:700}
+
+/* CUSTOMER DB */
+.db-s{background:var(--dark);min-height:100vh}
+.db-w{max-width:1100px;margin:0 auto;padding:56px 24px}
+.db-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;flex-wrap:wrap;gap:14px}
+.db-title{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:3px;color:var(--white)}
+.db-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:32px}
+.db-stat{background:var(--dark2);border:1px solid var(--border);border-radius:6px;padding:18px;text-align:center}
+.db-stat-n{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--gold);letter-spacing:2px}
+.db-stat-l{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.db-filters{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.db-fi{padding:8px 16px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all .2s}
+.db-fi:hover,.db-fi.on{background:var(--gold);color:var(--dark);border-color:var(--gold);font-weight:700}
+.db-search{flex:1;min-width:200px;background:var(--dark2);border:1px solid var(--border);color:var(--white);padding:9px 14px;border-radius:4px;font-family:'Barlow',sans-serif;font-size:13px;outline:none}
+.db-search:focus{border-color:var(--gold)}
+.db-table{width:100%;border-collapse:collapse}
+.db-table th{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);padding:12px 16px;border-bottom:1px solid var(--border);text-align:left;background:var(--dark2)}
+.db-table td{padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px;color:var(--light);vertical-align:middle}
+.db-table tr:hover td{background:rgba(201,168,76,.03)}
+.db-avatar{width:36px;height:36px;border-radius:50%;background:var(--dark4);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.db-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:var(--white)}
+.db-email{font-size:11px;color:var(--muted);margin-top:1px}
+.db-badge{font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:1px;padding:3px 8px;border-radius:20px;font-weight:700;text-transform:uppercase}
+.db-vip{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3)}
+.db-reg{background:rgba(255,255,255,.07);color:var(--muted);border:1px solid rgba(255,255,255,.1)}
+.db-new{background:rgba(39,174,96,.12);color:var(--green);border:1px solid rgba(39,174,96,.2)}
+.db-amt{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold)}
+.db-act{display:flex;gap:6px}
+.db-btn{background:var(--dark3);border:1px solid var(--border);color:var(--muted);padding:5px 10px;border-radius:3px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;transition:all .2s}
+.db-btn:hover{border-color:var(--gold);color:var(--gold)}
+.db-pagination{display:flex;gap:8px;justify-content:center;margin-top:24px;align-items:center}
+.db-pg{width:36px;height:36px;border:1px solid var(--border);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-size:13px;transition:all .2s}
+.db-pg:hover,.db-pg.on{background:var(--gold);border-color:var(--gold);color:var(--dark);font-weight:700}
+
+/* PAYMENT */
+.pay-s{background:var(--dark);min-height:100vh}
+.pay-w{max-width:680px;margin:0 auto;padding:56px 24px}
+.pay-title{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:3px;color:var(--white);margin-bottom:6px}
+.pay-sub{font-size:13px;color:var(--muted);margin-bottom:28px}
+.pay-mths{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:28px}
+.pmth{padding:14px 16px;border:2px solid var(--border);border-radius:8px;text-align:center;cursor:pointer;transition:all .25s;background:var(--dark2);display:flex;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden}
+.pmth:hover{transform:translateY(-2px)}
+.pmth.on{border-width:2px}
+.pmth-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:1px;font-weight:700}
+.pmth-paypal{border-color:rgba(0,48,135,.4);background:rgba(0,48,135,.08)}
+.pmth-paypal:hover,.pmth-paypal.on{border-color:#009cde;background:rgba(0,156,222,.1)}
+.pmth-paypal .pmth-label{color:#009cde}
+.pmth-visa{border-color:rgba(26,31,113,.4);background:rgba(26,31,113,.08)}
+.pmth-visa:hover,.pmth-visa.on{border-color:#1A1F71;background:rgba(26,31,113,.15)}
+.pmth-visa .pmth-label{color:#7b8dd4}
+.pmth-mc{border-color:rgba(235,0,27,.2);background:rgba(235,0,27,.05)}
+.pmth-mc:hover,.pmth-mc.on{border-color:#EB001B;background:rgba(235,0,27,.1)}
+.pmth-apple{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.03)}
+.pmth-apple:hover,.pmth-apple.on{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.08)}
+.pmth-gp{border-color:rgba(66,133,244,.2);background:rgba(66,133,244,.05)}
+.pmth-gp:hover,.pmth-gp.on{border-color:#4285f4;background:rgba(66,133,244,.1)}
+.pmth-amex{border-color:rgba(0,123,193,.3);background:rgba(0,123,193,.06)}
+.pmth-amex:hover,.pmth-amex.on{border-color:#007BC1;background:rgba(0,123,193,.12)}
+.pay-panel{display:none}.pay-panel.on{display:block}
+.ext-pay-btn{width:100%;padding:16px;border:none;border-radius:8px;cursor:pointer;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:12px;transition:all .25s;text-decoration:none;margin-bottom:10px}
+.paypal-btn{background:#0070ba;color:#fff}
+.paypal-btn:hover{background:#005ea6;transform:translateY(-2px)}
+.apple-btn{background:#000;color:#fff;border:1px solid rgba(255,255,255,.2)}
+.gp-btn{background:#fff;color:#3c4043}
+.or{background:var(--dark2);border:1px solid var(--border);border-radius:6px;padding:18px;margin-bottom:24px}
+.or-title{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold);margin-bottom:12px}
+.or-i{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;color:var(--muted)}
+.or-tot{display:flex;justify-content:space-between;padding-top:10px;margin-top:8px;border-top:1px solid var(--border);font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--white)}
+.or-tot .amt{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold)}
+.sec-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px;padding-top:20px;border-top:1px solid var(--border)}
+.sec-b{display:flex;align-items:center;gap:5px;font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;color:var(--muted);padding:6px 12px;border:1px solid var(--border);border-radius:20px}
+#stripe-card-element{background:var(--dark2);border:1px solid var(--border);border-radius:4px;padding:14px 15px;transition:border-color .2s}
+#stripe-card-errors{color:var(--red);font-size:12px;margin-top:8px;min-height:18px}
+.stripe-badge{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:10px;font-size:11px;color:var(--muted)}
+
+/* MEMBER */
+.mem-tab{flex:1;padding:13px 10px;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;text-align:center;cursor:pointer;background:transparent;border:none;color:var(--muted);transition:all .2s;border-right:1px solid var(--border)}
+.mem-tab:last-child{border-right:none}
+.mem-tab.on{background:var(--gold);color:var(--dark);font-weight:700}
+.mem-tab:hover:not(.on){color:var(--gold)}
+.order-card{background:var(--dark2);border:1px solid var(--border);border-radius:6px;padding:18px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.order-card:hover{border-color:var(--gold)}
+.order-id{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);letter-spacing:2px}
+.order-date{font-size:12px;color:var(--muted);margin-top:2px}
+.order-items{font-size:13px;color:var(--light);margin-top:4px}
+.order-status{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:1px;padding:4px 10px;border-radius:20px;font-weight:700}
+.os-delivered{background:rgba(39,174,96,.15);color:var(--green);border:1px solid rgba(39,174,96,.3)}
+.os-shipped{background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3)}
+.os-processing{background:rgba(255,255,255,.07);color:var(--muted);border:1px solid rgba(255,255,255,.1)}
+
+/* TOAST */
+.toast{position:fixed;bottom:26px;right:26px;background:var(--dark2);border:1px solid var(--gold);color:var(--light);padding:12px 18px;border-radius:5px;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:1px;z-index:9900;transform:translateY(70px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:9px;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:768px){
+  header{padding:0 14px}
+  nav{display:none}
+  .pg{padding:0 14px}
+  .h-title{font-size:58px}
+  .feat-strip{padding:20px 14px}
+  .sh{padding:40px 14px 24px}
+  .promo-s{padding:40px 14px}
+  .db-w{padding:40px 14px}
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-logo">BUSHIDO</div>
+  <div class="ld-sub">Combat Store</div>
+  <div class="ld-bar"><div class="ld-fill"></div></div>
+</div>
+
+
+<!-- PROMO BAR -->
+<div class="promo-bar" id="promoBar">
+  🔥 SOLDES — 25% sur tout avec le code <span class="code">BUSHIDO25</span> · Livraison offerte dès 60€
+  <button class="pbc" onclick="document.getElementById('promoBar').style.display='none'">×</button>
+</div>
+
+<!-- HEADER -->
+<header id="mhdr">
+  <a class="logo" onclick="show('home')"><em>BUSHIDO</em> STORE</a>
+  <nav>
+    <a onclick="show('home')" id="nav-home" class="on">Accueil</a>
+    <a onclick="show('products')" id="nav-products">Catalogue</a>
+    <a onclick="show('products1')" id="nav-products1">Enfant</a>
+    <a onclick="show('promo')" id="nav-promo">Promotions</a>
+    <a onclick="show('cart')" id="nav-cart">Panier</a>
+    <a onclick="show('inscription')" id="nav-inscription">Mon compte</a>
+  </nav>
+  <div class="hdr-r">
+    <div class="srch-w">
+      <input class="srch-i" id="srchInp" type="text" placeholder="Rechercher..." oninput="handleSearch(this.value)">
+      <button class="srch-b" onclick="toggleSearch()">🔍</button>
+    </div>
+    <button class="ibtn" onclick="openDrawer()">🛒<span class="bdg" id="cartBdg">0</span></button>
+    <button class="ibtn" onclick="show('inscription')">👤</button>
+    <button class="btn-cnx" id="btn-cnx-hdr" onclick="show('inscription')">Connexion</button>
+  </div>
+</header>
+
+<!-- SEARCH DROPDOWN -->
+<div class="sd" id="srchDrop">
+  <div class="sdl">Résultats</div>
+  <div class="srg" id="srchRes"></div>
+</div>
+
+<!-- ══ ACCUEIL ══ -->
+<section id="section-home" class="active">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-lines"></div>
+    <div class="hero-c">
+      <div class="h-eye">Arts Martiaux &amp; Sports de Combat</div>
+      <div class="h-title"><span class="g">COMBAT</span><br>READY</div>
+      <div class="h-sub">Rashguards · Gi BJJ · Gants · Judogi · Chaussures</div>
+      <div class="h-btns">
+        <button class="btn-p" onclick="show('products')">Découvrir la collection</button>
+        <button class="btn-g" onclick="show('promo')">Voir les promotions</button>
+      </div>
+    </div>
+    <div class="h-scroll" onclick="show('products')"><span>Explorer</span><div class="sdot"></div></div>
+  </div>
+  <div class="feat-strip">
+    <div class="feat-g">
+      <div class="feat-i"><div style="font-size:26px">🚚</div><div><div class="feat-h">Livraison rapide</div><div class="feat-s">Expédition sous 24h</div></div></div>
+      <div class="feat-i"><div style="font-size:26px">🏆</div><div><div class="feat-h">Qualité Pro</div><div class="feat-s">Certifié IBJJF / IJF</div></div></div>
+      <div class="feat-i"><div style="font-size:26px">🔄</div><div><div class="feat-h">Retours gratuits</div><div class="feat-s">30 jours sans conditions</div></div></div>
+      <div class="feat-i"><div style="font-size:26px">🔒</div><div><div class="feat-h">Paiement sécurisé</div><div class="feat-s">SSL · 3D Secure</div></div></div>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="sh"><span class="ey">Bestsellers</span><div class="st">PRODUITS PHARES</div></div>
+    <div class="pg" id="homeGrid"></div>
+  </div>
+  <div style="background:var(--dark3);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:56px 40px;text-align:center">
+    <div style="max-width:540px;margin:0 auto">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Espace membre</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(32px,5vw,50px);color:var(--white);letter-spacing:3px;margin-bottom:10px">REJOIGNEZ LA COMMUNAUTÉ</div>
+      <div style="font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6">Accédez aux offres exclusives, suivez vos commandes et bénéficiez de réductions réservées aux membres.</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-p" onclick="show('inscription');switchTab('register')">Créer mon compte</button>
+        <button class="btn-g" onclick="show('inscription');switchTab('login')">Se connecter</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CATALOGUE ADULTE ══ -->
+<section id="section-products" class="ptop">
+  <div class="cat-strip"><div class="cat-list" id="catList"></div></div>
+  <div class="ps">
+    <div class="sh"><span class="ey">Collection complète</span><div class="st" id="catTitle">TOUT LE CATALOGUE</div></div>
+    <div class="pg" id="catalogGrid"></div>
+  </div>
+</section>
+
+<!-- ══ CATALOGUE ENFANT ══ -->
+<section id="section-products1" class="ptop">
+  <div class="cat-strip">
+    <div class="cat-list" id="catListEnfant">
+      <button class="cat-pill on" onclick="filterCat2('Tous',this)">Tous enfant</button>
+      <button class="cat-pill" onclick="filterCat2('BJJ',this)">BJJ enfant</button>
+      <button class="cat-pill" onclick="filterCat2('Rashguard',this)">Rashguard enfant</button>
+      <button class="cat-pill" onclick="filterCat2('Boxe',this)">Boxe enfant</button>
+      <button class="cat-pill" onclick="filterCat2('Judo',this)">Judo enfant</button>
+      <button class="cat-pill" onclick="filterCat2('Grappling',this)">Grappling enfant</button>
+      <button class="cat-pill" onclick="filterCat2('Kick Boxing',this)">Kick Boxing enfant</button>
+      <button class="cat-pill" onclick="filterCat2('Lutte',this)">Lutte enfant</button>
+      <button class="cat-pill" onclick="filterCat2('Sambo',this)">Sambo enfant</button>
+      <button class="cat-pill" onclick="filterCat2('MMA',this)">MMA enfant</button>
+      <button class="cat-pill" onclick="filterCat2('Muay Thai',this)">Muay Thai enfant</button>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="sh"><span class="ey">Collection enfant</span><div class="st" id="catTitle2">CATALOGUE ENFANT</div></div>
+    <div class="pg" id="catalogGrid2"></div>
+  </div>
+</section>
+
+<!-- ══ PROMOTIONS ══ -->
+<section id="section-promo" class="ptop">
+  <div class="sh" style="background:var(--dark2);padding:56px 40px 36px"><span class="ey">Offres limitées</span><div class="st">PROMOTIONS</div></div>
+  <div class="promo-s">
+    <div class="promo-g">
+      <div class="proC pc1" onclick="filterCat('BJJ')"><div class="pce">🥋</div><div><div class="pcl">Collection BJJ</div><div class="pct">GI &amp; RASHGUARDS<br>-30%</div><div class="pcd">Toute la gamme BJJ à prix réduit. Qualité IBJJF certifiée.</div><div class="pcc">Voir les offres</div></div></div>
+      <div class="proC pc2" onclick="filterCat('Boxe')"><div class="pce">🥊</div><div><div class="pcl">Boxing Pack</div><div class="pct">GANTS + SAC<br>OFFERTS</div><div class="pcd">Achetez une paire de gants, recevez votre sac de frappe offert.</div><div class="pcc">Découvrir</div></div></div>
+      <div class="proC pc3" onclick="filterBadge('promo')"><div class="pce">⚡</div><div><div class="pcl">Flash Sale</div><div class="pct">DERNIÈRES<br>PIÈCES -50%</div><div class="pcd">Stocks limités. Fin de série sur une sélection premium.</div><div class="pcc">Saisir l'offre</div></div></div>
+      <div class="proC pc4" onclick="filterCat('Lutte')"><div class="pce">🤼</div><div><div class="pcl">Collection Lutte</div><div class="pct">DERNIÈRES<br>PIÈCES -50%</div><div class="pcd">Stocks limités. Fin de série sur une sélection premium.</div><div class="pcc">Saisir l'offre</div></div></div>
+      <div class="proC pc5" onclick="filterCat('Sambo')"><div class="pce">🥋</div><div><div class="pcl">Collection Sambo</div><div class="pct">DERNIÈRES<br>PIÈCES -70%</div><div class="pcd">Stocks limités. Fin de série sur une sélection premium.</div><div class="pcc">Saisir l'offre</div></div></div>
+    </div>
+  </div>
+  <div class="ps" style="padding-top:0">
+    <div class="sh"><span class="ey">En ce moment</span><div class="st">ARTICLES EN PROMO</div></div>
+    <div class="pg" id="promoGrid"></div>
+  </div>
+</section>
+
+<!-- ══ BASE CLIENTS ══ -->
+<section id="section-db" class="db-s ptop">
+  <div class="db-w">
+    <div class="db-head">
+      <div><div class="db-title">BASE CLIENTS</div><div style="font-size:13px;color:var(--muted);margin-top:4px">Gestion des achats et profils clients — données réelles</div></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn-p" style="background:var(--dark3);border:1px solid var(--border);color:var(--gold)" onclick="loadClients()">🔐 Charger les clients</button>
+        <button class="btn-p" onclick="exportCSV()">📥 Exporter CSV</button>
+      </div>
+    </div>
+    <div class="db-stats" id="dbStats"></div>
+    <div class="db-filters">
+      <input class="db-search" id="dbSearch" placeholder="🔍 Rechercher un client..." oninput="filterDB(this.value)">
+      <button class="db-fi on" onclick="filterDBStatus('all',this)">Tous</button>
+      <button class="db-fi" onclick="filterDBStatus('vip',this)">VIP</button>
+      <button class="db-fi" onclick="filterDBStatus('regular',this)">Réguliers</button>
+      <button class="db-fi" onclick="filterDBStatus('new',this)">Nouveaux</button>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="db-table">
+        <thead><tr><th>Client</th><th>Discipline</th><th>Commandes</th><th>Total dépensé</th><th>Dernier achat</th><th>Statut</th><th>Actions</th></tr></thead>
+        <tbody id="dbBody"></tbody>
+      </table>
+    </div>
+    <div class="db-pagination" id="dbPagination"></div>
+  </div>
+</section>
+
+<!-- ══ INSCRIPTION ══ -->
+<section id="section-inscription" class="ins-s ptop">
+  <div id="authView">
+    <div class="ins-w">
+      <div class="ins-logo">BUSHIDO</div>
+      <div class="ins-tl">Rejoignez la communauté des combattants</div>
+      <div class="ftabs">
+        <button class="ftab on" id="tab-login" onclick="switchTab('login')">Connexion</button>
+        <button class="ftab" id="tab-register" onclick="switchTab('register')">Inscription</button>
+      </div>
+      <div class="fb on" id="form-login">
+        <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="login-email" placeholder="votre@email.com"></div>
+        <div class="fg"><label class="fl">Mot de passe</label><div class="fiw"><input class="fi" type="password" placeholder="••••••••" id="lp"><span class="fii" onclick="tp('lp')">👁</span></div></div>
+        <div style="text-align:right;margin-bottom:18px"><a href="#" style="font-size:12px;color:var(--gold)">Mot de passe oublié ?</a></div>
+        <button class="btn-sub" onclick="loginUser()">Se connecter</button>
+        <div class="fdiv"><span>ou continuer avec</span></div>
+        <div class="srow"><a class="btn-soc" href="https://accounts.google.com" target="_blank">🟦 Google</a><a class="btn-soc" href="https://appleid.apple.com" target="_blank">⬛ Apple</a></div>
+        <div class="swl">Pas encore de compte ? <a onclick="switchTab('register')">Créer un compte →</a></div>
+      </div>
+      <div class="fb" id="form-register">
+        <div class="firow">
+          <div class="fg"><label class="fl">Prénom</label><input class="fi" type="text" id="reg-fn" placeholder="Prénom"></div>
+          <div class="fg"><label class="fl">Nom</label><input class="fi" type="text" id="reg-ln" placeholder="Nom"></div>
+        </div>
+        <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="reg-em" placeholder="votre@email.com"></div>
+        <div class="fg"><label class="fl">Mot de passe</label><div class="fiw"><input class="fi" type="password" id="reg-pw" placeholder="8 caractères minimum"><span class="fii" onclick="tp('reg-pw')">👁</span></div></div>
+        <div class="fg"><label class="fl">Discipline</label>
+          <select class="fi" id="reg-disc"><option value="">Sélectionner...</option><option>Jiu-Jitsu Brésilien</option><option>Boxe anglaise</option><option>Grappling / MMA</option><option>Judo</option><option>Muay Thaï</option><option>Karaté</option><option>Lutte</option></select>
+        </div>
+        <div class="fch"><input type="checkbox" id="cgv"><label for="cgv">J'accepte les <a href="#">CGV</a> et la <a href="#">politique de confidentialité</a></label></div>
+        <div class="fch"><input type="checkbox" id="news" checked><label for="news">Recevoir les offres exclusives Bushido Store</label></div>
+        <div id="reg-err" style="color:var(--red);font-size:13px;margin-bottom:10px;display:none"></div>
+        <button class="btn-sub" onclick="registerUser()">Créer mon compte</button>
+        <div class="fdiv"><span>ou continuer avec</span></div>
+        <div class="srow"><a class="btn-soc" href="https://accounts.google.com" target="_blank">🟦 Google</a><a class="btn-soc" href="https://appleid.apple.com" target="_blank">⬛ Apple</a></div>
+        <div class="swl">Déjà un compte ? <a onclick="switchTab('login')">Se connecter →</a></div>
+      </div>
+    </div>
+  </div>
+  <div id="memberView" style="display:none">
+    <div style="max-width:900px;margin:0 auto;padding:40px 24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:14px">
+        <div style="display:flex;align-items:center;gap:16px">
+          <div id="memberAvatar" style="width:64px;height:64px;border-radius:50%;background:var(--dark3);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:28px">🥋</div>
+          <div>
+            <div id="memberName" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);letter-spacing:2px">JOHN DOE</div>
+            <div id="memberEmail" style="font-size:13px;color:var(--muted)">email@email.com</div>
+            <div id="memberBadge" style="display:inline-block;margin-top:4px;font-family:'Barlow Condensed',sans-serif;font-size:10px;letter-spacing:2px;padding:3px 9px;border-radius:20px;background:rgba(201,168,76,.15);color:var(--gold);border:1px solid rgba(201,168,76,.3)">MEMBRE</div>
+          </div>
+        </div>
+        <button class="btn-g" onclick="logoutUser()" style="font-size:12px;padding:9px 18px">Déconnexion →</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:32px">
+        <div style="background:var(--dark2);border:1px solid var(--border);border-radius:6px;padding:16px;text-align:center"><div id="mStatOrders" style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold)">0</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Commandes</div></div>
+        <div style="background:var(--dark2);border:1px solid var(--border);border-radius:6px;padding:16px;text-align:center"><div id="mStatTotal" style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold)">0 €</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Total dépensé</div></div>
+        <div style="background:var(--dark2);border:1px solid var(--border);border-radius:6px;padding:16px;text-align:center"><div id="mStatDisc" style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold);letter-spacing:1px">—</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Discipline</div></div>
+        <div style="background:var(--dark2);border:1px solid var(--border);border-radius:6px;padding:16px;text-align:center"><div id="mStatPoints" style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold)">0</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase">Points fidélité</div></div>
+      </div>
+      <div style="display:flex;gap:0;background:var(--dark2);border-radius:5px;overflow:hidden;border:1px solid var(--border);margin-bottom:24px">
+        <button class="mem-tab on" id="mtab-orders" onclick="mTab('orders')">📦 Mes commandes</button>
+        <button class="mem-tab" id="mtab-profile" onclick="mTab('profile')">👤 Mon profil</button>
+        <button class="mem-tab" id="mtab-fav" onclick="mTab('fav')">❤️ Favoris</button>
+      </div>
+      <div id="mpanel-orders"><div id="memberOrders" style="display:flex;flex-direction:column;gap:12px"><div style="text-align:center;padding:40px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:2px">AUCUNE COMMANDE<br><button class="btn-p" style="margin-top:16px;font-size:12px;padding:10px 24px" onclick="show('products')">Voir le catalogue</button></div></div></div>
+      <div id="mpanel-profile" style="display:none">
+        <div style="background:var(--dark2);border:1px solid var(--border);border-radius:6px;padding:24px">
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--gold);margin-bottom:20px">INFORMATIONS PERSONNELLES</div>
+          <div class="firow"><div class="fg"><label class="fl">Prénom</label><input class="fi" id="prof-fn" type="text"></div><div class="fg"><label class="fl">Nom</label><input class="fi" id="prof-ln" type="text"></div></div>
+          <div class="fg"><label class="fl">Email</label><input class="fi" id="prof-em" type="email"></div>
+          <div class="fg"><label class="fl">Téléphone</label><input class="fi" id="prof-tel" type="tel" placeholder="+33 6 xx xx xx xx"></div>
+          <div class="fg"><label class="fl">Adresse</label><input class="fi" id="prof-addr" type="text" placeholder="Rue, numéro"></div>
+          <div class="firow"><div class="fg"><label class="fl">Code postal</label><input class="fi" id="prof-cp" type="text"></div><div class="fg"><label class="fl">Ville</label><input class="fi" id="prof-ville" type="text"></div></div>
+          <div class="fg"><label class="fl">Discipline</label><select class="fi" id="prof-disc"><option>Jiu-Jitsu Brésilien</option><option>Boxe anglaise</option><option>Grappling / MMA</option><option>Judo</option><option>Muay Thaï</option><option>Karaté</option><option>Lutte</option></select></div>
+          <button class="btn-sub" onclick="saveProfile()">Sauvegarder</button>
+        </div>
+      </div>
+      <div id="mpanel-fav" style="display:none"><div id="memberFavGrid" class="pg" style="padding:0"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PANIER ══ -->
+<section id="section-cart" class="cart-s ptop">
+  <div class="cw">
+    <div>
+      <div class="ctitle">MON PANIER</div>
+      <div id="cartCont"></div>
+    </div>
+    <div>
+      <div class="osum">
+        <div class="otitle">RÉCAPITULATIF</div>
+        <div class="sr"><span>Sous-total</span><span id="subtotal">0,00 €</span></div>
+        <div class="sr"><span>Livraison</span><span style="color:var(--green)">Gratuite</span></div>
+        <div class="pi-row"><input class="pi-i" type="text" placeholder="Code promo" id="promoCode"><button class="btn-ap" onclick="applyPromo()">Appliquer</button></div>
+        <div class="sr" id="discRow" style="display:none;color:var(--green)"><span>Réduction</span><span id="discAmt"></span></div>
+        <div class="sr total"><span>Total</span><span class="amt" id="totalAmt">0,00 €</span></div>
+        <button class="btn-co" onclick="show('payment')">Passer commande →</button>
+        <div class="sec-n">🔒 Paiement 100% sécurisé</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PAIEMENT ══ -->
+<section id="section-payment" class="pay-s ptop">
+  <div class="pay-w">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;cursor:pointer;width:fit-content" onclick="show('cart')">
+      <span style="color:var(--gold);font-size:18px">←</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted)">Retour au panier</span>
+    </div>
+    <div class="pay-title">PAIEMENT SÉCURISÉ</div>
+    <div class="pay-sub">🔒 Connexion SSL 256 bits</div>
+    <div class="or" id="payRecap"></div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px">Mode de paiement</div>
+    <div class="pay-mths">
+      <div class="pmth pmth-paypal on" onclick="selMethod('paypal',this)"><svg width="80" height="20" viewBox="0 0 80 20"><text y="16" font-family="Arial" font-weight="900" font-size="15" fill="#009cde">Pay</text><text x="28" y="16" font-family="Arial" font-weight="900" font-size="15" fill="#003087">Pal</text></svg></div>
+      <div class="pmth pmth-visa" onclick="selMethod('visa',this)"><svg width="60" height="20" viewBox="0 0 60 20"><text y="16" font-family="Arial" font-weight="900" font-size="18" fill="#1A1F71">VISA</text></svg></div>
+      <div class="pmth pmth-mc" onclick="selMethod('mc',this)"><svg width="44" height="28" viewBox="0 0 44 28"><circle cx="14" cy="14" r="14" fill="#EB001B"/><circle cx="30" cy="14" r="14" fill="#F79E1B"/><path d="M22 4.8a14 14 0 010 18.4A14 14 0 0122 4.8z" fill="#FF5F00"/></svg><span class="pmth-label" style="color:#e57">Mastercard</span></div>
+      <div class="pmth pmth-apple" onclick="selMethod('apple',this)"><span style="font-size:18px">🍎</span><span class="pmth-label" style="color:#fff">Apple Pay</span></div>
+      <div class="pmth pmth-gp" onclick="selMethod('gp',this)"><span class="pmth-label" style="color:#4285f4">Google Pay</span></div>
+      <div class="pmth pmth-amex" onclick="selMethod('amex',this)"><svg width="72" height="18" viewBox="0 0 90 22"><rect width="90" height="22" rx="3" fill="#007BC1"/><text x="5" y="16" font-family="Arial" font-weight="900" font-size="13" fill="white">AMEX</text></svg></div>
+    </div>
+    <div class="pay-panel on" id="panel-paypal">
+      <div style="background:var(--dark2);border:1px solid rgba(0,112,186,.3);border-radius:8px;padding:24px;text-align:center">
+        <div style="font-size:40px;margin-bottom:12px">🅿️</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px">Payer avec PayPal</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:20px">Vous serez redirigé vers PayPal pour finaliser votre paiement.</div>
+        <a class="ext-pay-btn paypal-btn" href="https://www.paypal.com/checkoutnow" target="_blank" onclick="showToast('🅿️','Redirection vers PayPal...')">PayPal — Payer <span id="pp-amt">0,00 €</span></a>
+      </div>
+    </div>
+    <div class="pay-panel" id="panel-visa">
+      <div style="background:var(--dark2);border:1px solid rgba(201,168,76,.2);border-radius:8px;padding:20px;margin-bottom:16px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--white);margin-bottom:16px;letter-spacing:1px">Paiement sécurisé Stripe · Visa / MC / Amex / CB</div>
+        <div class="fg"><label class="fl">Titulaire</label><input class="fi" type="text" id="stripe-name" placeholder="JEAN DUPONT" style="text-transform:uppercase"></div>
+        <div class="fg"><label class="fl">Email</label><input class="fi" type="email" id="stripe-email" placeholder="votre@email.com"></div>
+        <div class="fg"><label class="fl">Numéro de carte</label><div id="stripe-card-element"></div><div id="stripe-card-errors" role="alert"></div></div>
+        <button class="btn-sub" id="stripe-pay-btn" onclick="stripeConfirmPay()">🔒 Payer — <span id="payAmt">0,00 €</span></button>
+        <div class="stripe-badge" style="margin-top:10px;font-size:11px;color:var(--muted);text-align:center">Paiement sécurisé par Stripe · SSL 256 bits</div>
+      </div>
+    </div>
+    <div class="pay-panel" id="panel-mc"><div style="background:var(--dark2);border:1px solid rgba(235,0,27,.2);border-radius:8px;padding:20px;text-align:center"><div style="font-size:13px;color:var(--muted);margin-bottom:18px">Mastercard accepté via Stripe.</div><button class="btn-sub" onclick="selMethod('visa',document.querySelector('.pmth-visa'))">Payer via Stripe →</button></div></div>
+    <div class="pay-panel" id="panel-apple"><div style="background:var(--dark2);border-radius:8px;padding:28px;text-align:center"><div style="font-size:44px;margin-bottom:14px">🍎</div><a class="ext-pay-btn apple-btn" href="https://www.apple.com/apple-pay/" target="_blank">Apple Pay — <span id="ap-amt">0,00 €</span></a></div></div>
+    <div class="pay-panel" id="panel-gp"><div style="background:var(--dark2);border:1px solid rgba(66,133,244,.25);border-radius:8px;padding:28px;text-align:center"><div style="font-size:44px;margin-bottom:14px">🟦</div><a class="ext-pay-btn gp-btn" href="https://pay.google.com" target="_blank">Google Pay — <span id="gp-amt">0,00 €</span></a></div></div>
+    <div class="pay-panel" id="panel-amex"><div style="background:var(--dark2);border:1px solid rgba(0,123,193,.3);border-radius:8px;padding:20px;text-align:center"><div style="font-size:13px;color:var(--muted);margin-bottom:18px">Amex accepté via Stripe.</div><button class="btn-sub" onclick="selMethod('visa',document.querySelector('.pmth-visa'))">Payer via Stripe →</button></div></div>
+    <div class="sec-badges"><div class="sec-b">🔒 SSL 256 bits</div><div class="sec-b">✅ 3D Secure</div><div class="sec-b">🛡️ PCI DSS</div><div class="sec-b">🏦 Certifié</div></div>
+  </div>
+</section>
+
+<!-- ══ PRODUCT MODAL ══ -->
+<div class="mOv" id="prodMOv" onclick="closeMBg(event)">
+  <div class="pmw">
+    <div class="pm-l">
+      <div id="pmImgWrap" style="width:100%;height:260px;overflow:hidden;border-radius:8px 0 0 0;margin-bottom:12px">
+        <img id="pmImg" src="" alt="" style="width:100%;height:100%;object-fit:cover">
+      </div>
+      <div class="pm-th" id="pmThs"></div>
+    </div>
+    <div class="pm-r">
+      <button class="pm-x" onclick="closeM()">×</button>
+      <div class="pmCat" id="pmCat"></div>
+      <div class="pmNm" id="pmNm"></div>
+      <div class="pmSt" id="pmSt"></div>
+      <div class="pmRv" id="pmRv"></div>
+      <div class="pmPr"><span class="pmPrice" id="pmPrc"></span><span class="pmOld" id="pmOld"></span><span class="pmTag" id="pmTag" style="display:none">PROMO</span></div>
+      <div class="pmDesc" id="pmDsc"></div>
+      <div id="colSec">
+        <div class="pm-sl">Couleur : <span id="colLbl" style="color:var(--white);font-weight:700"></span></div>
+        <div class="c-row" id="colRow"></div>
+      </div>
+      <div class="sz-lr"><span class="sz-la" id="szLbl">Taille</span><button class="sgb" onclick="toggleSG()">📏 Guide des tailles</button></div>
+      <div class="szps" id="szPs"></div>
+      <div class="szerr" id="szErr">⚠ Veuillez choisir une taille</div>
+      <div class="sgp" id="sgPnl"><div class="sgT" id="sgT"></div><div id="sgC"></div><div class="sgn" id="sgN"></div></div>
+      <div class="pm-act"><button class="btn-pmc" onclick="addFromM()">🛒 Ajouter au panier</button><button class="btn-pmf" id="pmFv" onclick="toggleFvM()">🤍</button></div>
+      <div class="pmch" id="pmCh"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CART DRAWER -->
+<div class="dov" id="dOv" onclick="closeDrBg(event)">
+  <div class="cdw">
+    <div class="dwh"><div class="dwt">PANIER 🛒</div><button class="dwc" onclick="closeDr()">×</button></div>
+    <div id="drItems"></div>
+    <div style="margin-top:18px;border-top:1px solid var(--border);padding-top:14px">
+      <div class="sr total" style="margin-bottom:14px"><span>Total</span><span class="amt" id="drTotal">0,00 €</span></div>
+      <button class="btn-co" onclick="closeDr();show('cart')">Voir le panier</button>
+      <button class="btn-co" style="background:transparent;border:1px solid var(--border);color:var(--light);margin-top:9px" onclick="closeDr();show('payment')">Payer maintenant →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="tIco"></span><span id="tMsg"></span></div>
+
+<script>
+/* ══════════════════════════════════════════════
+   DONNÉES PRODUITS ADULTE
+   ─────────────────────────────────────────────
+   COMMENT CHANGER LES IMAGES PAR COULEUR :
+   Chaque produit a un champ "imgs" avec une URL
+   par couleur. Remplacez les URLs par les vôtres.
+   La couleur par défaut (img) s'affiche en premier.
+   Exemple :
+     imgs: {
+       'Noir':  'https://mon-site.com/noir.jpg',
+       'Blanc': 'https://mon-site.com/blanc.jpg',
+       'Rouge': 'https://mon-site.com/rouge.jpg',
+     }
+══════════════════════════════════════════════ */
+const products=[
+  {id:1,name:'Rashguard Compression Pro',cat:'Rashguard',price:49.90,old:69.90,badge:'promo',stars:5,rev:128,
+   // ▼▼▼ IMAGE PAR DÉFAUT — PRODUIT 1 (Rashguard Compression Pro) ▼▼▼
+   img:'https://tse2.mm.bing.net/th/id/OIP.D19gJI6OwQVI8sI14Gxv0QAAAA?rs=1&pid=ImgDetMain',
+   // ▼▼▼ IMAGES PAR COULEUR — PRODUIT 1 ▼▼▼
+   imgs:{
+     'Noir':  'https://tse2.mm.bing.net/th/id/OIP.D19gJI6OwQVI8sI14Gxv0QAAAA?rs=1&pid=ImgDetMain', // ← remplacez
+     'Blanc': 'https://tse2.mm.bing.net/th/id/OIP.D19gJI6OwQVI8sI14Gxv0QAAAA?rs=1&pid=ImgDetMain', // ← remplacez
+     'Bleu Marine': 'https://tse2.mm.bing.net/th/id/OIP.D19gJI6OwQVI8sI14Gxv0QAAAA?rs=1&pid=ImgDetMain', // ← remplacez
+     'Rouge': 'https://tse2.mm.bing.net/th/id/OIP.D19gJI6OwQVI8sI14Gxv0QAAAA?rs=1&pid=ImgDetMain', // ← remplacez
+   },
+   desc:'Rashguard haute compression manches longues, coutures plates anti-friction.'},
+
+  {id:2,name:'Gi BJJ Compétition Gold',cat:'BJJ',price:129.90,old:null,badge:'new',stars:5,rev:94,
+   img:'https://boutiquedesartsmartiaux.com/cdn/shop/files/kimono-HAJIME.webp?v=1776014080&width=1000',
+   imgs:{
+     'Blanc': 'https://boutiquedesartsmartiaux.com/cdn/shop/files/kimono-HAJIME.webp?v=1776014080&width=1000',
+     'Bleu Royal': 'https://boutiquedesartsmartiaux.com/cdn/shop/files/kimono-HAJIME.webp?v=1776014080&width=1000',
+     'Noir': 'https://boutiquedesartsmartiaux.com/cdn/shop/files/kimono-HAJIME.webp?v=1776014080&width=1000',
+   },
+   desc:'Gi IBJJF certifié, coton perle 550g, broderies renforcées.'},
+
+  {id:3,name:'Gants de Boxe Cuir Pro',cat:'Boxe',price:89.90,old:119.90,badge:'promo',stars:4,rev:211,
+   img:'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400&h=300&fit=crop',
+   imgs:{
+     'Noir': 'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400&h=300&fit=crop',
+     'Rouge': 'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400&h=300&fit=crop',
+     'Or':    'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400&h=300&fit=crop',
+   },
+   desc:'Gants cuir véritable, rembourrage triple densité gel-foam.'},
+
+  {id:4,name:'Chaussures Boxe Haute',cat:'Boxe',price:74.90,old:null,badge:'new',stars:5,rev:67,
+   img:'https://dragonbleu.fr/cdn/shop/files/4e54d43453ce32dc506a4a891944cffe987722a5_321819_003_39_001.jpg?v=1771251623&width=1946',
+   imgs:{
+     'Noir/Or':      'https://dragonbleu.fr/cdn/shop/files/4e54d43453ce32dc506a4a891944cffe987722a5_321819_003_39_001.jpg?v=1771251623&width=1946',
+     'Blanc/Rouge':  'https://dragonbleu.fr/cdn/shop/files/4e54d43453ce32dc506a4a891944cffe987722a5_321819_003_39_001.jpg?v=1771251623&width=1946',
+   },
+   desc:'Semelle pivotante, tige haute stabilité, grip maximal sur ring.'},
+
+  {id:5,name:'Short Grappling No-Gi',cat:'Grappling',price:39.90,old:54.90,badge:'promo',stars:4,rev:183,
+   img:'https://eu.tatamifightwear.com/cdn/shop/files/image_928aa171-4eeb-48ba-ba61-92080f94a7ac.jpg?v=1738850432&width=640',
+   imgs:{
+     'Noir':  'https://eu.tatamifightwear.com/cdn/shop/files/image_928aa171-4eeb-48ba-ba61-92080f94a7ac.jpg?v=1738850432&width=640',
+     'Gris':  'https://eu.tatamifightwear.com/cdn/shop/files/image_928aa171-4eeb-48ba-ba61-92080f94a7ac.jpg?v=1738850432&width=640',
+     'Bleu':  'https://eu.tatamifightwear.com/cdn/shop/files/image_928aa171-4eeb-48ba-ba61-92080f94a7ac.jpg?v=1738850432&width=640',
+   },
+   desc:'Short grappling 4-way stretch, résistant aux frictions.'},
+
+  {id:6,name:'Judogi Champion IJF',cat:'Judo',price:99.90,old:null,badge:'hot',stars:5,rev:45,
+   img:'https://tse2.mm.bing.net/th/id/OIP.h4KYls5NcFhlLsNM3I8dwwHaHa?rs=1&pid=ImgDetMain',
+   imgs:{
+     'Blanc':    'https://tse2.mm.bing.net/th/id/OIP.h4KYls5NcFhlLsNM3I8dwwHaHa?rs=1&pid=ImgDetMain',
+     'Bleu IJF': 'https://tse2.mm.bing.net/th/id/OIP.h4KYls5NcFhlLsNM3I8dwwHaHa?rs=1&pid=ImgDetMain',
+   },
+   desc:'Judogi homologué IJF, simple tissage 750g, col renforcé.'},
+
+  {id:7,name:'Gants de boxe rouge',cat:'Boxe',price:34.90,old:44.90,badge:'promo',stars:4,rev:99,
+   img:'https://www.casalsport.com/fstrz/r/s/www.casalsport.com/img/S/GRP/ST/AIG127699495.jpg',
+   imgs:{
+     'Noir':  'https://www.casalsport.com/fstrz/r/s/www.casalsport.com/img/S/GRP/ST/AIG127699495.jpg',
+     'Rouge': 'https://www.casalsport.com/fstrz/r/s/www.casalsport.com/img/S/GRP/ST/AIG127699495.jpg',
+     'Or':    'https://www.casalsport.com/fstrz/r/s/www.casalsport.com/img/S/GRP/ST/AIG127699495.jpg',
+   },
+   desc:'Gants de boxe homologués, protection articulations.'},
+
+  {id:8,name:'Rashguard BJJ Femme',cat:'Rashguard',price:44.90,old:null,badge:'new',stars:5,rev:72,
+   img:'https://punchingball.fr/cdn/shop/files/kf-Sb1f2f7f844b44efdbe5afb73c94dcf23d.webp?v=1756909554&width=832',
+   imgs:{
+     'Noir':      'https://punchingball.fr/cdn/shop/files/kf-Sb1f2f7f844b44efdbe5afb73c94dcf23d.webp?v=1756909554&width=832',
+     'Blanc':     'https://punchingball.fr/cdn/shop/files/kf-Sb1f2f7f844b44efdbe5afb73c94dcf23d.webp?v=1756909554&width=832',
+     'Bleu Marine':'https://punchingball.fr/cdn/shop/files/kf-Sb1f2f7f844b44efdbe5afb73c94dcf23d.webp?v=1756909554&width=832',
+     'Rouge':     'https://punchingball.fr/cdn/shop/files/kf-Sb1f2f7f844b44efdbe5afb73c94dcf23d.webp?v=1756909554&width=832',
+   },
+   desc:'Rashguard manches courtes graphisme Irezumi, UPF 50+.'},
+
+  {id:9,name:'Chaussures Lutte Pro',cat:'Grappling',price:64.90,old:79.90,badge:'promo',stars:4,rev:38,
+   img:'https://ae-pic-a1.aliexpress-media.com/kf/Se5b442f0cdf0403792af03b23b600150J.jpg_960x960q75.jpg',
+   imgs:{
+     'Noir/Or':     'https://ae-pic-a1.aliexpress-media.com/kf/Se5b442f0cdf0403792af03b23b600150J.jpg_960x960q75.jpg',
+     'Blanc/Rouge': 'https://ae-pic-a1.aliexpress-media.com/kf/Se5b442f0cdf0403792af03b23b600150J.jpg_960x960q75.jpg',
+   },
+   desc:'Chaussures lutte spéciales, semelle grip 360°, tige légère.'},
+
+  {id:10,name:'Bandages de Boxe 4m',cat:'Boxe',price:12.90,old:null,badge:null,stars:5,rev:320,
+   // ▼▼▼ IMAGE PAR DÉFAUT — PRODUIT 10 (Bandages de Boxe 4m) ▼▼▼
+   img:'https://tse2.mm.bing.net/th/id/OIP.JZLX1IyDQKQ4vlFc_mLzmQHaHa?rs=1&pid=ImgDetMain',
+   // ▼▼▼ IMAGES PAR COULEUR — PRODUIT 10 ▼▼▼
+   imgs:{
+     'Noir':  'https://tse2.mm.bing.net/th/id/OIP.JZLX1IyDQKQ4vlFc_mLzmQHaHa?rs=1&pid=ImgDetMain', // ← remplacez
+     'Rouge': 'https://tse2.mm.bing.net/th/id/OIP.JZLX1IyDQKQ4vlFc_mLzmQHaHa?rs=1&pid=ImgDetMain', // ← remplacez
+     'Or':    'https://tse2.mm.bing.net/th/id/OIP.JZLX1IyDQKQ4vlFc_mLzmQHaHa?rs=1&pid=ImgDetMain', // ← remplacez
+   },
+   desc:'Bandages semi-rigides 4 mètres, lavables en machine.'},
+
+  {id:11,name:'Short Jiu-Jitsu No-Gi',cat:'BJJ',price:29.90,old:39.90,badge:'promo',stars:4,rev:144,
+   img:'https://img-1.kwcdn.com/thumbnail/s/563ffcf0ceb2cf5f654e0e1942604c48_62a1f58d1cc9.jpeg',
+   imgs:{
+     'Noir':      'https://img-1.kwcdn.com/thumbnail/s/563ffcf0ceb2cf5f654e0e1942604c48_62a1f58d1cc9.jpeg',
+     'Bleu Royal':'https://img-1.kwcdn.com/thumbnail/s/563ffcf0ceb2cf5f654e0e1942604c48_62a1f58d1cc9.jpeg',
+   },
+   desc:'Short noir allaise, anti-glisse, séchage rapide.'},
+
+  {id:12,name:'Rashguard Grappling',cat:'Grappling',price:89.90,old:119.90,badge:'promo',stars:4,rev:211,
+   img:'https://revgeareurope.co.uk/cdn/shop/products/bionic-compression-rashguard-655479.jpg?v=1744594485&width=1080',
+   imgs:{
+     'Noir': 'https://revgeareurope.co.uk/cdn/shop/products/bionic-compression-rashguard-655479.jpg?v=1744594485&width=1080',
+     'Gris': 'https://revgeareurope.co.uk/cdn/shop/products/bionic-compression-rashguard-655479.jpg?v=1744594485&width=1080',
+     'Bleu': 'https://revgeareurope.co.uk/cdn/shop/products/bionic-compression-rashguard-655479.jpg?v=1744594485&width=1080',
+   },
+   desc:'Compression maximale, anti-friction, séchage ultra-rapide.'},
+
+  {id:13,name:'Gi BJJ Venum Blanc',cat:'BJJ',price:129.90,old:null,badge:'new',stars:5,rev:94,
+   img:'https://fr.venum.com/cdn/shop/files/10a08eae646d49af6407f0f4dc545c0d09036513_VENUM_06055_002_G_00.jpg?v=1774532380&width=823',
+   imgs:{
+     'Blanc':    'https://fr.venum.com/cdn/shop/files/10a08eae646d49af6407f0f4dc545c0d09036513_VENUM_06055_002_G_00.jpg?v=1774532380&width=823',
+     'Bleu Royal':'https://fr.venum.com/cdn/shop/files/10a08eae646d49af6407f0f4dc545c0d09036513_VENUM_06055_002_G_00.jpg?v=1774532380&width=823',
+     'Noir':     'https://fr.venum.com/cdn/shop/files/10a08eae646d49af6407f0f4dc545c0d09036513_VENUM_06055_002_G_00.jpg?v=1774532380&width=823',
+   },
+   desc:'Gi Venum blanc, broderies renforcées, certifié IBJJF.'},
+
+  {id:14,name:'Gants Sparring MMA',cat:'MMA',price:89.90,old:119.90,badge:'promo',stars:4,rev:211,
+   img:'https://boutiquedesartsmartiaux.com/cdn/shop/files/GantsdeMMASparringVenumImpactEvoScales-Noir.jpg?v=1776008686&width=1200',
+   imgs:{
+     'Noir':  'https://boutiquedesartsmartiaux.com/cdn/shop/files/GantsdeMMASparringVenumImpactEvoScales-Noir.jpg?v=1776008686&width=1200',
+     'Rouge': 'https://boutiquedesartsmartiaux.com/cdn/shop/files/GantsdeMMASparringVenumImpactEvoScales-Noir.jpg?v=1776008686&width=1200',
+     'Or':    'https://boutiquedesartsmartiaux.com/cdn/shop/files/GantsdeMMASparringVenumImpactEvoScales-Noir.jpg?v=1776008686&width=1200',
+   },
+   desc:'Gants MMA sparring, protection maximale.'},
+
+  {id:15,name:'Short Kick Boxing',cat:'Kick Boxing',price:89.90,old:119.90,badge:'promo',stars:4,rev:211,
+   img:'https://fr.venum.com/cdn/shop/files/783a6eccd35d9cfe9861b8c0ba64d378a89520df_4_252Fa_252Fc_252F2_252F4ac280d1ad863f6a26f58accf2884da4fd19337d_SHORT_MUAY_THAI_CLASSIC_BLACK.jpg?v=1774626748&width=823',
+   imgs:{
+     'Noir':  'https://fr.venum.com/cdn/shop/files/783a6eccd35d9cfe9861b8c0ba64d378a89520df_4_252Fa_252Fc_252F2_252F4ac280d1ad863f6a26f58accf2884da4fd19337d_SHORT_MUAY_THAI_CLASSIC_BLACK.jpg?v=1774626748&width=823',
+     'Bleu':  'https://fr.venum.com/cdn/shop/files/783a6eccd35d9cfe9861b8c0ba64d378a89520df_4_252Fa_252Fc_252F2_252F4ac280d1ad863f6a26f58accf2884da4fd19337d_SHORT_MUAY_THAI_CLASSIC_BLACK.jpg?v=1774626748&width=823',
+     'Rouge': 'https://fr.venum.com/cdn/shop/files/783a6eccd35d9cfe9861b8c0ba64d378a89520df_4_252Fa_252Fc_252F2_252F4ac280d1ad863f6a26f58accf2884da4fd19337d_SHORT_MUAY_THAI_CLASSIC_BLACK.jpg?v=1774626748&width=823',
+   },
+   desc:'Short kick boxing, séchage rapide, coupe sportive.'},
+
+  {id:16,name:'Ensemble Lutte',cat:'Lutte',price:70.90,old:119.90,badge:'promo',stars:4,rev:211,
+   img:'https://ae-pic-a1.aliexpress-media.com/kf/Scca7ef852c5540358d1a8d75bb1c8adaq.jpg_960x960q75.jpg',
+   imgs:{
+     'Noir':  'https://ae-pic-a1.aliexpress-media.com/kf/Scca7ef852c5540358d1a8d75bb1c8adaq.jpg_960x960q75.jpg',
+     'Bleu':  'https://ae-pic-a1.aliexpress-media.com/kf/Scca7ef852c5540358d1a8d75bb1c8adaq.jpg_960x960q75.jpg',
+     'Rouge': 'https://ae-pic-a1.aliexpress-media.com/kf/Scca7ef852c5540358d1a8d75bb1c8adaq.jpg_960x960q75.jpg',
+   },
+   desc:'Ensemble lutte, tissu résistant aux frictions.'},
+
+  {id:17,name:'Tenue Sambo',cat:'Sambo',price:20.90,old:35.90,badge:'promo',stars:4,rev:211,
+   img:'https://s.alicdn.com/@sc04/kf/Sa3053a48aa274d9c902d037100c08ae8w.jpg',
+   imgs:{
+     'Noir':  'https://s.alicdn.com/@sc04/kf/Sa3053a48aa274d9c902d037100c08ae8w.jpg',
+     'Bleu':  'https://s.alicdn.com/@sc04/kf/Sa3053a48aa274d9c902d037100c08ae8w.jpg',
+     'Rouge': 'https://s.alicdn.com/@sc04/kf/Sa3053a48aa274d9c902d037100c08ae8w.jpg',
+   },
+   desc:'Tenue sambo certifiée compétition.'},
+];
+
+/* ══════════════════════════════════════════════
+   DONNÉES PRODUITS ENFANT
+   ─────────────────────────────────────────────
+   Même principe : champ "imgs" par couleur.
+══════════════════════════════════════════════ */
+const products2=[
+  {id:101,name:'Gi BJJ Junior',cat:'BJJ',price:79.90,old:null,badge:'new',stars:5,rev:56,
+   img:'https://boutiquedesartsmartiaux.com/cdn/shop/files/kimono-HAJIME.webp?v=1776014080&width=1000',
+   imgs:{
+     'Blanc':    'https://boutiquedesartsmartiaux.com/cdn/shop/files/kimono-HAJIME.webp?v=1776014080&width=1000',
+     'Bleu':     'https://boutiquedesartsmartiaux.com/cdn/shop/files/kimono-HAJIME.webp?v=1776014080&width=1000',
+     'Noir':     'https://boutiquedesartsmartiaux.com/cdn/shop/files/kimono-HAJIME.webp?v=1776014080&width=1000',
+   },
+   desc:'Gi junior dès 4 ans, lavage facile, certifié IBJJF kids.',
+   sizes:['M000','M00','M0','M1','M2'],out:[]},
+
+  {id:102,name:'Rashguard Junior',cat:'Rashguard',price:29.90,old:39.90,badge:'promo',stars:4,rev:42,
+   // ▼▼▼ IMAGE PAR DÉFAUT — PRODUIT 102 (Rashguard Junior) ▼▼▼
+   img:'https://tse2.mm.bing.net/th/id/OIP.D19gJI6OwQVI8sI14Gxv0QAAAA?rs=1&pid=ImgDetMain',
+   // ▼▼▼ IMAGES PAR COULEUR — PRODUIT 102 ▼▼▼
+   imgs:{
+     'Noir':  'https://tse2.mm.bing.net/th/id/OIP.D19gJI6OwQVI8sI14Gxv0QAAAA?rs=1&pid=ImgDetMain', // ← remplacez
+     'Blanc': 'https://tse2.mm.bing.net/th/id/OIP.D19gJI6OwQVI8sI14Gxv0QAAAA?rs=1&pid=ImgDetMain', // ← remplacez
+     'Bleu':  'https://tse2.mm.bing.net/th/id/OIP.D19gJI6OwQVI8sI14Gxv0QAAAA?rs=1&pid=ImgDetMain', // ← remplacez
+     'Rouge': 'https://tse2.mm.bing.net/th/id/OIP.D19gJI6OwQVI8sI14Gxv0QAAAA?rs=1&pid=ImgDetMain', // ← remplacez
+   },
+   desc:'Rashguard enfant haute compression, UPF 50+.',
+   sizes:['4 ans','6 ans','8 ans','10 ans','12 ans','14 ans'],out:[]},
+
+  {id:103,name:'Gants Boxe Junior',cat:'Boxe',price:34.90,old:44.90,badge:'promo',stars:4,rev:38,
+   img:'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400&h=300&fit=crop',
+   imgs:{
+     'Noir':  'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400&h=300&fit=crop',
+     'Rouge': 'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400&h=300&fit=crop',
+     'Bleu':  'https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=400&h=300&fit=crop',
+   },
+   desc:'Gants boxe enfant, protection renforcée.',
+   sizes:['4 oz','6 oz','8 oz'],out:[]},
+
+  {id:104,name:'Judogi Junior',cat:'Judo',price:49.90,old:null,badge:'new',stars:5,rev:29,
+   img:'https://tse2.mm.bing.net/th/id/OIP.h4KYls5NcFhlLsNM3I8dwwHaHa?rs=1&pid=ImgDetMain',
+   imgs:{
+     'Blanc':    'https://tse2.mm.bing.net/th/id/OIP.h4KYls5NcFhlLsNM3I8dwwHaHa?rs=1&pid=ImgDetMain',
+     'Bleu IJF': 'https://tse2.mm.bing.net/th/id/OIP.h4KYls5NcFhlLsNM3I8dwwHaHa?rs=1&pid=ImgDetMain',
+   },
+   desc:'Judogi junior homologué, léger et résistant.',
+   sizes:['00','0','1','2','3'],out:[]},
+
+  {id:105,name:'Short Grappling Junior',cat:'Grappling',price:24.90,old:34.90,badge:'promo',stars:4,rev:51,
+   img:'https://eu.tatamifightwear.com/cdn/shop/files/image_928aa171-4eeb-48ba-ba61-92080f94a7ac.jpg?v=1738850432&width=640',
+   imgs:{
+     'Noir': 'https://eu.tatamifightwear.com/cdn/shop/files/image_928aa171-4eeb-48ba-ba61-92080f94a7ac.jpg?v=1738850432&width=640',
+     'Bleu': 'https://eu.tatamifightwear.com/cdn/shop/files/image_928aa171-4eeb-48ba-ba61-92080f94a7ac.jpg?v=1738850432&width=640',
+     'Rouge':'https://eu.tatamifightwear.com/cdn/shop/files/image_928aa171-4eeb-48ba-ba61-92080f94a7ac.jpg?v=1738850432&width=640',
+   },
+   desc:'Short grappling enfant 4-way stretch.',
+   sizes:['4 ans','6 ans','8 ans','10 ans','12 ans','14 ans'],out:[]},
+
+  {id:106,name:'Short Kick Boxing Junior',cat:'Kick Boxing',price:22.90,old:null,badge:'new',stars:5,rev:18,
+   img:'https://fr.venum.com/cdn/shop/files/783a6eccd35d9cfe9861b8c0ba64d378a89520df_4_252Fa_252Fc_252F2_252F4ac280d1ad863f6a26f58accf2884da4fd19337d_SHORT_MUAY_THAI_CLASSIC_BLACK.jpg?v=1774626748&width=823',
+   imgs:{
+     'Noir':  'https://fr.venum.com/cdn/shop/files/783a6eccd35d9cfe9861b8c0ba64d378a89520df_4_252Fa_252Fc_252F2_252F4ac280d1ad863f6a26f58accf2884da4fd19337d_SHORT_MUAY_THAI_CLASSIC_BLACK.jpg?v=1774626748&width=823',
+     'Bleu':  'https://fr.venum.com/cdn/shop/files/783a6eccd35d9cfe9861b8c0ba64d378a89520df_4_252Fa_252Fc_252F2_252F4ac280d1ad863f6a26f58accf2884da4fd19337d_SHORT_MUAY_THAI_CLASSIC_BLACK.jpg?v=1774626748&width=823',
+     'Rouge': 'https://fr.venum.com/cdn/shop/files/783a6eccd35d9cfe9861b8c0ba64d378a89520df_4_252Fa_252Fc_252F2_252F4ac280d1ad863f6a26f58accf2884da4fd19337d_SHORT_MUAY_THAI_CLASSIC_BLACK.jpg?v=1774626748&width=823',
+   },
+   desc:'Short kick boxing junior, séchage rapide.',
+   sizes:['4 ans','6 ans','8 ans','10 ans','12 ans','14 ans'],out:[]},
+
+  {id:107,name:'Ensemble Lutte Junior',cat:'Lutte',price:44.90,old:59.90,badge:'promo',stars:4,rev:22,
+   img:'https://ae-pic-a1.aliexpress-media.com/kf/Scca7ef852c5540358d1a8d75bb1c8adaq.jpg_960x960q75.jpg',
+   imgs:{
+     'Noir':  'https://ae-pic-a1.aliexpress-media.com/kf/Scca7ef852c5540358d1a8d75bb1c8adaq.jpg_960x960q75.jpg',
+     'Bleu':  'https://ae-pic-a1.aliexpress-media.com/kf/Scca7ef852c5540358d1a8d75bb1c8adaq.jpg_960x960q75.jpg',
+     'Rouge': 'https://ae-pic-a1.aliexpress-media.com/kf/Scca7ef852c5540358d1a8d75bb1c8adaq.jpg_960x960q75.jpg',
+   },
+   desc:'Ensemble lutte enfant, tissu résistant.',
+   sizes:['4 ans','6 ans','8 ans','10 ans','12 ans'],out:[]},
+
+  {id:108,name:'Tenue Sambo Junior',cat:'Sambo',price:39.90,old:54.90,badge:'promo',stars:4,rev:15,
+   img:'https://s.alicdn.com/@sc04/kf/Sa3053a48aa274d9c902d037100c08ae8w.jpg',
+   imgs:{
+     'Noir':  'https://s.alicdn.com/@sc04/kf/Sa3053a48aa274d9c902d037100c08ae8w.jpg',
+     'Bleu':  'https://s.alicdn.com/@sc04/kf/Sa3053a48aa274d9c902d037100c08ae8w.jpg',
+     'Rouge': 'https://s.alicdn.com/@sc04/kf/Sa3053a48aa274d9c902d037100c08ae8w.jpg',
+   },
+   desc:'Tenue sambo junior, certifiée compétition jeunes.',
+   sizes:['4 ans','6 ans','8 ans','10 ans','12 ans'],out:[]},
+
+  {id:109,name:'Rashguard MMA Junior',cat:'MMA',price:27.90,old:null,badge:'new',stars:5,rev:33,
+   img:'https://boutiquedesartsmartiaux.com/cdn/shop/files/GantsdeMMASparringVenumImpactEvoScales-Noir.jpg?v=1776008686&width=1200',
+   imgs:{
+     'Noir':  'https://boutiquedesartsmartiaux.com/cdn/shop/files/GantsdeMMASparringVenumImpactEvoScales-Noir.jpg?v=1776008686&width=1200',
+     'Bleu':  'https://boutiquedesartsmartiaux.com/cdn/shop/files/GantsdeMMASparringVenumImpactEvoScales-Noir.jpg?v=1776008686&width=1200',
+     'Rouge': 'https://boutiquedesartsmartiaux.com/cdn/shop/files/GantsdeMMASparringVenumImpactEvoScales-Noir.jpg?v=1776008686&width=1200',
+   },
+   desc:'Rashguard MMA junior, UPF 50+.',
+   sizes:['4 ans','6 ans','8 ans','10 ans','12 ans','14 ans'],out:[]},
+
+  {id:110,name:'Rashguard Muay Thai Junior',cat:'Muay Thai',price:25.90,old:35.90,badge:'promo',stars:4,rev:27,
+   img:'https://revgeareurope.co.uk/cdn/shop/products/bionic-compression-rashguard-655479.jpg?v=1744594485&width=1080',
+   imgs:{
+     'Noir':  'https://revgeareurope.co.uk/cdn/shop/products/bionic-compression-rashguard-655479.jpg?v=1744594485&width=1080',
+     'Bleu':  'https://revgeareurope.co.uk/cdn/shop/products/bionic-compression-rashguard-655479.jpg?v=1744594485&width=1080',
+     'Rouge': 'https://revgeareurope.co.uk/cdn/shop/products/bionic-compression-rashguard-655479.jpg?v=1744594485&width=1080',
+   },
+   desc:'Rashguard muay thai junior, anti-glisse.',
+   sizes:['4 ans','6 ans','8 ans','10 ans','12 ans','14 ans'],out:[]},
+];
+
+/* ══════════════════════════════════════════════
+   GUIDES DE TAILLES ENFANT
+══════════════════════════════════════════════ */
+const SD_KIDS = {
+  BJJ:{label:'Taille Gi Junior',sizes:['M000','M00','M0','M1','M2'],out:[],
+    colors:[{n:'Blanc',c:'#eee'},{n:'Bleu',c:'#1a3a8a'},{n:'Noir',c:'#111'}],
+    guide:{title:'GUIDE TAILLES GI JUNIOR',cols:['Taille','Âge','Hauteur','Poids'],
+      rows:[['M000','4–5 ans','100–110 cm','18–22 kg'],['M00','5–6 ans','110–120 cm','22–27 kg'],['M0','6–8 ans','120–130 cm','27–33 kg'],['M1','8–10 ans','130–140 cm','33–40 kg'],['M2','10–12 ans','140–150 cm','40–48 kg']],
+      note:'💡 Les Gi rétrécissent au lavage. Prévoir une taille au-dessus pour les poussées de croissance.'},
+    features:['Certifié IBJJF Kids','Coton léger','Coutures renforcées']},
+  Judo:{label:'Taille Judogi Junior',sizes:['00','0','1','2','3'],out:[],
+    colors:[{n:'Blanc',c:'#eee'},{n:'Bleu IJF',c:'#1a3a8a'}],
+    guide:{title:'GUIDE TAILLES JUDOGI JUNIOR',cols:['Taille','Âge','Hauteur','Poids'],
+      rows:[['00','4–5 ans','100–110 cm','18–22 kg'],['0','5–7 ans','110–125 cm','22–30 kg'],['1','7–9 ans','125–140 cm','30–40 kg'],['2','9–11 ans','140–155 cm','40–50 kg'],['3','11–13 ans','155–165 cm','50–60 kg']],
+      note:'💡 Homologué IJF. Laver à 30°C uniquement.'},
+    features:['Homologué IJF','Tissu léger','Épaules renforcées']},
+  Boxe:{label:'Poids gants (oz)',sizes:['4 oz','6 oz','8 oz'],out:[],
+    colors:[{n:'Noir',c:'#111'},{n:'Rouge',c:'#c0392b'},{n:'Bleu',c:'#1a3a8a'}],
+    guide:{title:'GUIDE GANTS BOXE JUNIOR',cols:['Poids','Âge','Corps'],
+      rows:[['4 oz','4–6 ans','< 25 kg'],['6 oz','6–9 ans','25–35 kg'],['8 oz','9–12 ans','35–50 kg']],
+      note:'💡 Pour entraînement et initiation uniquement.'},
+    features:['Mousse haute densité','Fermeture velcro','Homologués junior']},
+  default:{label:'Âge / Taille',sizes:['4 ans','6 ans','8 ans','10 ans','12 ans','14 ans'],out:[],
+    colors:[{n:'Noir',c:'#111'},{n:'Bleu',c:'#1a3a8a'},{n:'Rouge',c:'#c0392b'}],
+    guide:{title:'GUIDE TAILLES VÊTEMENTS JUNIOR',cols:['Taille','Âge','Hauteur','Tour de taille'],
+      rows:[['4 ans','3–4 ans','98–104 cm','52–55 cm'],['6 ans','5–6 ans','110–116 cm','55–58 cm'],['8 ans','7–8 ans','122–128 cm','58–61 cm'],['10 ans','9–10 ans','134–140 cm','61–65 cm'],['12 ans','11–12 ans','146–152 cm','65–69 cm'],['14 ans','13–14 ans','158–164 cm','69–74 cm']],
+      note:'💡 En cas de doute, prenez la taille supérieure pour laisser de la place.'},
+    features:['Tissu stretch','Séchage rapide','Anti-glisse']}
+};
+function getSC_kids(p){return SD_KIDS[p.cat]||SD_KIDS.default;}
+
+/* ══════════════════════════════════════════════
+   GUIDES TAILLES ADULTE
+══════════════════════════════════════════════ */
+const SD={
+  Rashguard:{label:'Taille',sizes:['XS','S','M','L','XL','XXL'],out:['XS'],colors:[{n:'Noir',c:'#111'},{n:'Blanc',c:'#ddd'},{n:'Bleu Marine',c:'#1a2a6c'},{n:'Rouge',c:'#c0392b'}],guide:{title:'GUIDE TAILLES RASHGUARD',cols:['Taille','Poitrine','Taille','Hauteur'],rows:[['XS','80–85','64–68','155–163'],['S','86–91','69–74','164–170'],['M','92–97','75–80','171–176'],['L','98–104','81–87','177–182'],['XL','105–111','88–94','183–188'],['XXL','112–118','95–102','189–195']],note:'💡 En cas de doute, prenez la taille supérieure.'},features:['UPF 50+','Anti-glisse','Coutures plates','Séchage rapide']},
+  BJJ:{label:'Taille Gi',sizes:['A0','A1','A2','A3','A4','A5'],out:[],colors:[{n:'Blanc',c:'#eee'},{n:'Bleu Royal',c:'#1a3a8a'},{n:'Noir',c:'#111'}],guide:{title:'GUIDE TAILLES GI BJJ',cols:['Taille','Hauteur','Poids','Poitrine'],rows:[['A0','155–163 cm','50–65 kg','86–90 cm'],['A1','160–170 cm','60–75 kg','91–96 cm'],['A2','170–180 cm','70–85 kg','97–103 cm'],['A3','178–185 cm','82–95 kg','104–110 cm'],['A4','183–190 cm','90–110 kg','111–118 cm'],['A5','188–196 cm','108–130 kg','119–130 cm']],note:'💡 Les Gi rétrécissent. Lavez à 30°C. A2 = taille la plus vendue.'},features:['Certifié IBJJF','Coton perle 550g','Broderies','Ripstop']},
+  Grappling:{label:'Taille',sizes:['XS','S','M','L','XL','XXL'],out:['XS'],colors:[{n:'Noir',c:'#111'},{n:'Gris',c:'#555'},{n:'Bleu',c:'#1a3a8a'}],guide:{title:'GUIDE TAILLES GRAPPLING',cols:['Taille','Taille','Hanches','Hauteur'],rows:[['XS','68–74','82–88','155–165'],['S','74–80','88–94','163–172'],['M','80–86','94–100','170–178'],['L','86–93','100–107','176–183'],['XL','93–100','107–114','181–188'],['XXL','100–110','114–124','186–194']],note:'💡 Choisissez votre taille habituelle.'},features:['Stretch 4-way','Anti-friction','Séchage rapide']},
+  Judo:{label:'Taille Judogi',sizes:['1','2','3','4','5','6','7'],out:['7'],colors:[{n:'Blanc',c:'#eee'},{n:'Bleu IJF',c:'#1a3a8a'}],guide:{title:'GUIDE TAILLES JUDOGI',cols:['Taille','Hauteur','Poids'],rows:[['1','110–130 cm','20–35 kg'],['2','130–150 cm','35–50 kg'],['3','150–165 cm','50–65 kg'],['4','163–173 cm','65–80 kg'],['5','170–180 cm','75–95 kg'],['6','178–188 cm','90–110 kg'],['7','186–196 cm','105–130 kg']],note:'💡 Homologué IJF.'},features:['Homologué IJF','750g','Épaules renforcées']},
+};
+const GLOV={label:'Poids gants (oz)',sizes:['8 oz','10 oz','12 oz','14 oz','16 oz'],out:[],colors:[{n:'Noir',c:'#111'},{n:'Rouge',c:'#c0392b'},{n:'Or',c:'#c9a84c'}],guide:{title:'GUIDE GANTS DE BOXE',cols:['Poids','Corps','Usage'],rows:[['8 oz','<55 kg','Compétition'],['10 oz','55–65 kg','Entraîn.'],['12 oz','65–75 kg','Entraîn.'],['14 oz','75–90 kg','Sparring'],['16 oz','>90 kg','Sparring max']],note:'💡 Sparring : minimum 14 oz.'},features:['Cuir véritable','Triple densité','Gel-foam']};
+const SHOE={label:'Pointure (EU)',sizes:['38','39','40','41','42','43','44','45'],out:[],colors:[{n:'Noir/Or',c:'#1a1200'},{n:'Blanc/Rouge',c:'#fff0f0'}],guide:{title:'GUIDE POINTURES',cols:['EU','UK','US','cm'],rows:[['38','5','6','24,0'],['39','6','7','24,7'],['40','6.5','7.5','25,3'],['41','7','8','26,0'],['42','8','9','26,7'],['43','9','10','27,3'],['44','9.5','10.5','28,0'],['45','10','11','28,7']],note:'💡 Mesurez le soir. +0,5 cm entre orteil et bout.'},features:['Semelle pivotante','Tige haute','Grip 360°']};
+function getSC(p){
+  if(p.cat==='Boxe') return p.name.toLowerCase().includes('chaussure')?SHOE:GLOV;
+  return SD[p.cat]||SD['Grappling'];
+}
+
+/* ══════════════════════════════════════════════
+   ÉTAT GLOBAL
+══════════════════════════════════════════════ */
+let cart=[], liked=new Set(), activeCat='Tous', curProd=null, isKidsProd=false;
+let selSz=null, selCol=null, sgOpen=false, promoDiscount=0, curMethod='paypal';
+const cardSizes={};
+
+/* ══════════════════════════════════════════════
+   BASE CLIENTS — VRAIS DONNÉES (API)
+══════════════════════════════════════════════ */
+let CUSTOMERS=[];
+let dbFilter='all',dbSearch='',dbPage=1;
+const PER_PAGE=10;
+
+// Charge les vrais clients depuis le serveur (admin uniquement)
+async function loadClients(){
+  const key=prompt('Mot de passe admin :');
+  if(!key)return;
+  try{
+    const r=await fetch('/api/admin/clients',{headers:{'x-admin-key':key}});
+    const data=await r.json();
+    if(!r.ok){showToast('❌',data.error||'Accès refusé');return;}
+    CUSTOMERS=data.clients.map(c=>({
+      id:c.id,
+      fn:c.prenom,
+      ln:c.nom,
+      email:c.email,
+      disc:c.discipline||'—',
+      orders:parseInt(c.nb_commandes)||0,
+      total:parseFloat(c.total_depense)||0,
+      lastBuy:c.dernier_achat?new Date(c.dernier_achat).toLocaleDateString('fr-FR'):'—',
+      status:parseFloat(c.total_depense)>500?'vip':parseInt(c.nb_commandes)>2?'regular':'new',
+      avatar:c.avatar||'🥋'
+    }));
+    renderDB();
+    showToast('✅',`${CUSTOMERS.length} clients chargés`);
+  }catch(e){showToast('❌','Erreur connexion serveur');}
+}
+
+function renderDB(){
+  if(!CUSTOMERS.length){
+    document.getElementById('dbStats').innerHTML=`<div class="db-stat"><div class="db-stat-n">—</div><div class="db-stat-l">Clients total</div></div><div class="db-stat"><div class="db-stat-n">—</div><div class="db-stat-l">Clients VIP</div></div><div class="db-stat"><div class="db-stat-n">—</div><div class="db-stat-l">Chiffre d'affaires</div></div><div class="db-stat"><div class="db-stat-n">—</div><div class="db-stat-l">Panier moyen</div></div>`;
+    document.getElementById('dbBody').innerHTML=`<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;letter-spacing:2px">CLIQUEZ "CHARGER LES CLIENTS" POUR VOIR VOS VRAIS CLIENTS</td></tr>`;
+    document.getElementById('dbPagination').innerHTML='';
+    return;
+  }
+  let list=CUSTOMERS.filter(c=>{const ms=dbSearch.toLowerCase();const matchS=!ms||c.fn.toLowerCase().includes(ms)||c.ln.toLowerCase().includes(ms)||c.email.includes(ms);const matchF=dbFilter==='all'||c.status===dbFilter;return matchS&&matchF;});
+  const total=list.length,pages=Math.ceil(total/PER_PAGE)||1;
+  if(dbPage>pages)dbPage=1;
+  const slice=list.slice((dbPage-1)*PER_PAGE,dbPage*PER_PAGE);
+  const vips=CUSTOMERS.filter(c=>c.status==='vip').length;
+  const revenue=CUSTOMERS.reduce((s,c)=>s+c.total,0);
+  const totalOrders=CUSTOMERS.reduce((s,c)=>s+c.orders,0);
+  const avgOrder=totalOrders>0?Math.round(revenue/totalOrders):0;
+  document.getElementById('dbStats').innerHTML=`<div class="db-stat"><div class="db-stat-n">${CUSTOMERS.length}</div><div class="db-stat-l">Clients total</div></div><div class="db-stat"><div class="db-stat-n">${vips}</div><div class="db-stat-l">Clients VIP</div></div><div class="db-stat"><div class="db-stat-n">${revenue.toLocaleString('fr-FR')} €</div><div class="db-stat-l">Chiffre d'affaires</div></div><div class="db-stat"><div class="db-stat-n">${avgOrder} €</div><div class="db-stat-l">Panier moyen</div></div>`;
+  document.getElementById('dbBody').innerHTML=slice.map(c=>`<tr><td><div style="display:flex;align-items:center;gap:10px"><div class="db-avatar">${c.avatar}</div><div><div class="db-name">${c.fn} ${c.ln}</div><div class="db-email">${c.email}</div></div></div></td><td style="color:var(--muted);font-size:12px">${c.disc}</td><td style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--white)">${c.orders}</td><td><span class="db-amt">${c.total.toLocaleString('fr-FR')} €</span></td><td style="color:var(--muted);font-size:12px">${c.lastBuy}</td><td><span class="db-badge db-${c.status}">${c.status==='vip'?'⭐ VIP':c.status==='new'?'🆕 Nouveau':'✅ Régulier'}</span></td><td><div class="db-act"><button class="db-btn" onclick="showToast('👁','Profil de ${c.fn}')">Voir</button><button class="db-btn" onclick="showToast('📧','Email envoyé à ${c.fn}')">Email</button></div></td></tr>`).join('');
+  let pg='';for(let i=1;i<=pages;i++)pg+=`<button class="db-pg ${i===dbPage?'on':''}" onclick="dbPage=${i};renderDB()">${i}</button>`;
+  document.getElementById('dbPagination').innerHTML=`<button class="db-pg" onclick="if(dbPage>1){dbPage--;renderDB()}" ${dbPage<=1?'disabled':''}>‹</button>${pg}<button class="db-pg" onclick="if(dbPage<${pages}){dbPage++;renderDB()}" ${dbPage>=pages?'disabled':''}>›</button><span style="font-size:12px;color:var(--muted);margin-left:8px">${total} résultat${total>1?'s':''}</span>`;
+}
+function filterDB(v){dbSearch=v;dbPage=1;renderDB();}
+function filterDBStatus(s,el){dbFilter=s;dbPage=1;document.querySelectorAll('.db-fi').forEach(b=>b.classList.remove('on'));el.classList.add('on');renderDB();}
+function exportCSV(){const hdr='ID,Prénom,Nom,Email,Discipline,Commandes,Total,Dernier achat,Statut\n';const rows=CUSTOMERS.map(c=>`${c.id},${c.fn},${c.ln},${c.email},${c.disc},${c.orders},${c.total},${c.lastBuy},${c.status}`).join('\n');const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(hdr+rows);a.download='clients_bushido.csv';a.click();showToast('📥','Export CSV téléchargé !');}
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+window.addEventListener('load',()=>{
+  setTimeout(()=>document.getElementById('loader').classList.add('hide'),2500);
+  renderHG();renderCat();renderPromo();renderCats();renderCat2('Tous');syncCart();renderDB();
+  // Restaurer session JWT si token présent
+  const token=getToken();
+  if(token){
+    fetch('/api/profil',{headers:{'Authorization':'Bearer '+token}})
+      .then(r=>r.json())
+      .then(data=>{if(data.id){currentUser=data;document.getElementById('btn-cnx-hdr').textContent='Mon espace';}else{clearToken();}})
+      .catch(()=>clearToken());
+  }
+});
+window.addEventListener('scroll',()=>document.getElementById('mhdr').classList.toggle('sc',scrollY>50));
+
+/* ══════════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════════ */
+function show(name){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav a').forEach(a=>a.classList.remove('on'));
+  document.getElementById('section-'+name).classList.add('active');
+  const n=document.getElementById('nav-'+name);if(n)n.classList.add('on');
+  scrollTo(0,0);closeSrch();
+  if(name==='payment')buildPayRec();
+  if(name==='inscription'){const token=getToken();if(token&&currentUser){showMemberDashboard(currentUser);}else{document.getElementById('authView').style.display='block';document.getElementById('memberView').style.display='none';}}
+}
+
+/* ══════════════════════════════════════════════
+   ACCÈS ADMIN SECRET (pas de lien public)
+   → Pour y accéder, ouvre ton site avec :
+   https://TON-SITE.up.railway.app/#admin-bushido
+   (change "bushido" ci-dessous par ton propre code secret)
+══════════════════════════════════════════════ */
+const ADMIN_SECRET = 'bushido';
+function checkAdminAccess(){
+  if(location.hash === '#admin-'+ADMIN_SECRET){ show('db'); }
+  if(location.hash === '#mon-compte'){ show('inscription'); }
+}
+window.addEventListener('hashchange', checkAdminAccess);
+window.addEventListener('load', checkAdminAccess);
+
+/* ══════════════════════════════════════════════
+   CARTES ADULTE
+══════════════════════════════════════════════ */
+function cHTML(p){
+  const s='★'.repeat(p.stars)+'☆'.repeat(5-p.stars);
+  const b=p.badge?`<span class="pb b-${p.badge}">${p.badge==='new'?'Nouveau':p.badge==='promo'?'Promo':'🔥 Hot'}</span>`:'';
+  const o=p.old?`<span class="pold">${p.old.toFixed(2).replace('.',',')} €</span>`:'';
+  const img=p.img?`<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;transition:transform .4s">`:`<span style="font-size:60px">🥊</span>`;
+  return `<div class="pc" onclick="openM(${p.id},false)">
+    <div class="pi">${b}${img}<button class="pfav ${liked.has(p.id)?'liked':''}" onclick="event.stopPropagation();tFav(${p.id})">${liked.has(p.id)?'❤️':'🤍'}</button></div>
+    <div class="pinfo">
+      <div class="pcat">${p.cat}</div><div class="pname">${p.name}</div>
+      <div class="ppr"><span class="pprice">${p.price.toFixed(2).replace('.',',')} €</span>${o}</div>
+      <div class="pstars">${s}</div><div class="prev">${p.rev} avis</div>
+      <button class="btn-sz" onclick="event.stopPropagation();openM(${p.id},false)">Choisir ma taille →</button>
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════════════════════════════
+   CARTES ENFANT
+══════════════════════════════════════════════ */
+function cHTML2(p){
+  const s='★'.repeat(p.stars)+'☆'.repeat(5-p.stars);
+  const b=p.badge?`<span class="pb b-${p.badge}">${p.badge==='new'?'Nouveau':p.badge==='promo'?'Promo':'🔥 Hot'}</span>`:'';
+  const o=p.old?`<span class="pold">${p.old.toFixed(2).replace('.',',')} €</span>`:'';
+  const img=p.img?`<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;transition:transform .4s">`:`<span style="font-size:60px">🥊</span>`;
+  const szBtns=p.sizes.map(sz=>`<button class="szp-card ${cardSizes[p.id]===sz?'sel':''}" onclick="event.stopPropagation();selectCardSize(${p.id},'${sz}')">${sz}</button>`).join('');
+  return `<div class="pc" onclick="openM(${p.id},true)">
+    <div class="pi">${b}${img}<button class="pfav ${liked.has(p.id)?'liked':''}" onclick="event.stopPropagation();tFav(${p.id})">${liked.has(p.id)?'❤️':'🤍'}</button></div>
+    <div class="pinfo">
+      <div class="pcat">${p.cat}</div><div class="pname">${p.name}</div>
+      <div class="ppr"><span class="pprice">${p.price.toFixed(2).replace('.',',')} €</span>${o}</div>
+      <div class="pstars">${s}</div><div class="prev">${p.rev} avis</div>
+      <div class="szps-card">${szBtns}</div>
+      <button class="btn-sz" onclick="event.stopPropagation();openM(${p.id},true)">Voir le produit →</button>
+    </div>
+  </div>`;
+}
+
+function selectCardSize(productId,sz){
+  cardSizes[productId]=sz;
+  renderCat2(document.getElementById('catTitle2').dataset.filter||'Tous');
+}
+
+/* ══════════════════════════════════════════════
+   RENDER
+══════════════════════════════════════════════ */
+const CATS=['Tous','BJJ','Rashguard','Boxe','Grappling','Judo','MMA','Lutte','Kick Boxing','Muay Thai','Sambo'];
+function renderHG(){document.getElementById('homeGrid').innerHTML=products.slice(0,6).map(cHTML).join('')}
+function renderCat(f='Tous',bf=null){
+  let l=products;
+  if(f!=='Tous')l=l.filter(p=>p.cat.toLowerCase()===f.toLowerCase());
+  if(bf)l=l.filter(p=>p.badge===bf);
+  document.getElementById('catalogGrid').innerHTML=l.map(cHTML).join('');
+  document.getElementById('catTitle').textContent=f==='Tous'?'TOUT LE CATALOGUE':f.toUpperCase();
+}
+function renderPromo(){document.getElementById('promoGrid').innerHTML=products.filter(p=>p.badge==='promo'||p.badge==='hot').map(cHTML).join('')}
+function renderCats(){document.getElementById('catList').innerHTML=CATS.map(c=>`<button class="cat-pill ${c===activeCat?'on':''}" onclick="filterCat('${c}')">${c}</button>`).join('');}
+function filterCat(c){activeCat=c;renderCats();renderCat(c);show('products')}
+function filterBadge(b){renderCat('Tous',b);show('products')}
+function renderCat2(f='Tous'){
+  let l=products2;
+  if(f!=='Tous')l=l.filter(p=>p.cat.toLowerCase()===f.toLowerCase());
+  document.getElementById('catalogGrid2').innerHTML=l.map(cHTML2).join('');
+  const t=document.getElementById('catTitle2');
+  t.textContent=f==='Tous'?'CATALOGUE ENFANT':f.toUpperCase()+' ENFANT';
+  t.dataset.filter=f;
+}
+function filterCat2(f,el){
+  renderCat2(f);
+  document.querySelectorAll('#catListEnfant .cat-pill').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+}
+
+/* ══════════════════════════════════════════════
+   MODALE PRODUIT — FIX COULEURS
+   La fonction sCo() met maintenant à jour l'image
+   principale en lisant le champ "imgs" du produit.
+══════════════════════════════════════════════ */
+function openM(id,isKids){
+  const allProds=isKids?products2:products;
+  const p=allProds.find(x=>x.id===id);if(!p)return;
+  curProd=p;isKidsProd=isKids;selSz=isKids?(cardSizes[id]||null):null;selCol=null;sgOpen=false;
+  document.getElementById('sgPnl').classList.remove('open');
+  const cfg=isKids?getSC_kids(p):getSC(p);
+  const mi=document.getElementById('pmImg');mi.src=p.img||'';mi.alt=p.name;
+  document.getElementById('pmCat').textContent=p.cat+(isKids?' — Junior':'');
+  document.getElementById('pmNm').textContent=p.name;
+  document.getElementById('pmSt').textContent='★'.repeat(p.stars)+'☆'.repeat(5-p.stars);
+  document.getElementById('pmRv').textContent=p.rev+' avis vérifiés';
+  document.getElementById('pmPrc').textContent=p.price.toFixed(2).replace('.',',')+' €';
+  const oe=document.getElementById('pmOld'),te=document.getElementById('pmTag');
+  if(p.old){oe.textContent=p.old.toFixed(2).replace('.',',')+' €';te.style.display='inline';}
+  else{oe.textContent='';te.style.display='none';}
+  document.getElementById('pmDsc').textContent=p.desc;
+  document.getElementById('szLbl').textContent=cfg.label;
+  document.getElementById('pmFv').textContent=liked.has(p.id)?'❤️':'🤍';
+  document.getElementById('pmFv').className='btn-pmf'+(liked.has(p.id)?' liked':'');
+  document.getElementById('pmThs').innerHTML=[0,1,2].map(i=>`<div class="pm-t ${i===0?'on':''}" onclick="this.parentNode.querySelectorAll('.pm-t').forEach(t=>t.classList.remove('on'));this.classList.add('on')">${p.img?`<img src="${p.img}" style="width:100%;height:100%;object-fit:cover">`:''}</div>`).join('');
+  document.getElementById('colSec').style.display=cfg.colors.length?'block':'none';
+  document.getElementById('colRow').innerHTML=cfg.colors.map((c,i)=>`<div class="cdot ${i===0?'sel':''}" style="background:${c.c};border-color:${i===0?'var(--gold)':'transparent'}" onclick="sCo(this,'${c.n}')" title="${c.n}"></div>`).join('');
+  document.getElementById('colLbl').textContent=cfg.colors[0]?.n||'';
+  selCol=cfg.colors[0]?.n||null;
+  // Appliquer l'image de la couleur par défaut si disponible
+  if(p.imgs && cfg.colors[0] && p.imgs[cfg.colors[0].n]){
+    document.getElementById('pmImg').src=p.imgs[cfg.colors[0].n];
+  }
+  document.getElementById('szPs').innerHTML=cfg.sizes.map(sz=>`<button class="szp ${(cfg.out||[]).includes(sz)?'out':''} ${selSz===sz?'sel':''}" onclick="sSz(this,'${sz}',${(cfg.out||[]).includes(sz)})">${sz}</button>`).join('');
+  document.getElementById('szErr').style.display='none';
+  const g=cfg.guide;
+  document.getElementById('sgT').textContent=g.title;
+  document.getElementById('sgN').textContent=g.note;
+  document.getElementById('sgC').innerHTML=g.cols.length?`<table class="sgtb"><thead><tr>${g.cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${g.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`:'';
+  document.getElementById('pmCh').innerHTML=(cfg.features||[]).map(f=>`<span class="pmchip">✓ ${f}</span>`).join('');
+  document.getElementById('prodMOv').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeM(){document.getElementById('prodMOv').classList.remove('open');document.body.style.overflow='';}
+function closeMBg(e){if(e.target===e.currentTarget)closeM();}
+
+function sSz(el,s,out){
+  if(out)return;
+  document.querySelectorAll('.szp').forEach(p=>p.classList.remove('sel'));
+  el.classList.add('sel');selSz=s;
+  document.getElementById('szErr').style.display='none';
+  if(isKidsProd&&curProd){cardSizes[curProd.id]=s;}
+}
+
+/* ══════════════════════════════════════════════
+   sCo — FIX : change vraiment l'image selon couleur
+══════════════════════════════════════════════ */
+function sCo(el,n){
+  // Reset tous les points
+  document.querySelectorAll('.cdot').forEach(d=>{
+    d.classList.remove('sel');
+    d.style.borderColor='transparent';
+  });
+  // Sélectionner le point cliqué
+  el.classList.add('sel');
+  el.style.borderColor='var(--gold)';
+  selCol=n;
+  document.getElementById('colLbl').textContent=n;
+
+  // ▼▼▼ CHANGEMENT D'IMAGE SELON LA COULEUR ▼▼▼
+  // Si le produit a des images par couleur (champ "imgs"), on les utilise
+  if(curProd && curProd.imgs && curProd.imgs[n]){
+    document.getElementById('pmImg').src=curProd.imgs[n];
+  }
+  // Sinon on garde l'image par défaut (rien à faire)
+}
+
+function toggleSG(){sgOpen=!sgOpen;document.getElementById('sgPnl').classList.toggle('open',sgOpen);}
+
+function addFromM(){
+  const cfg=isKidsProd?getSC_kids(curProd):getSC(curProd);
+  if(cfg.sizes.length>0&&!selSz){document.getElementById('szErr').style.display='block';return;}
+  const p=curProd;
+  const ex=cart.find(i=>i.id===p.id&&i.size===selSz&&i.color===selCol&&i.isKids===isKidsProd);
+  if(ex)ex.qty++;
+  else cart.push({...p,qty:1,size:selSz,color:selCol,isKids:isKidsProd});
+  syncCart();
+  showToast('🛒',`${p.name}${selSz?' · '+selSz:''} ajouté !`);
+  closeM();
+}
+
+function toggleFvM(){
+  const id=curProd.id;
+  if(liked.has(id)){liked.delete(id);showToast('💔','Retiré des favoris');}
+  else{liked.add(id);showToast('❤️','Ajouté aux favoris !');}
+  document.getElementById('pmFv').textContent=liked.has(id)?'❤️':'🤍';
+  document.getElementById('pmFv').className='btn-pmf'+(liked.has(id)?' liked':'');
+  renderHG();renderCat(activeCat);renderPromo();
+  if(isKidsProd)renderCat2(document.getElementById('catTitle2').dataset.filter||'Tous');
+}
+
+function tFav(id){
+  if(liked.has(id))liked.delete(id);else liked.add(id);
+  renderHG();renderCat(activeCat);renderPromo();
+  renderCat2(document.getElementById('catTitle2').dataset.filter||'Tous');
+}
+
+/* ══════════════════════════════════════════════
+   PANIER
+══════════════════════════════════════════════ */
+function syncCart(){
+  const cnt=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartBdg').textContent=cnt;
+  renderCartS();renderDr();syncTotals();
+}
+function removeI(id,sz,col,kids){cart=cart.filter(i=>!(i.id===id&&i.size===sz&&i.color===col&&i.isKids===kids));syncCart();}
+function chQty(id,sz,col,kids,d){
+  const it=cart.find(i=>i.id===id&&i.size===sz&&i.color===col&&i.isKids===kids);
+  if(!it)return;it.qty+=d;
+  if(it.qty<=0){removeI(id,sz,col,kids);return;}
+  syncCart();
+}
+function syncTotals(){
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const disc=sub*promoDiscount;const tot=sub-disc;
+  const fmt=v=>v.toFixed(2).replace('.',',')+' €';
+  document.getElementById('subtotal').textContent=fmt(sub);
+  document.getElementById('totalAmt').textContent=fmt(tot);
+  const da=document.getElementById('drTotal');if(da)da.textContent=fmt(tot);
+  if(promoDiscount)document.getElementById('discAmt').textContent='-'+fmt(disc);
+  ['payAmt','pp-amt','ap-amt','gp-amt'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=fmt(tot);});
+}
+function applyPromo(){
+  const c=document.getElementById('promoCode').value.toUpperCase();
+  if(c==='BUSHIDO25'){promoDiscount=.25;document.getElementById('discRow').style.display='flex';showToast('🎉','Code promo -25% appliqué !');}
+  else{showToast('❌','Code invalide');promoDiscount=0;}
+  syncTotals();
+}
+function ciHTML(forDr=false){
+  if(!cart.length)return`<div style="text-align:center;padding:${forDr?'28':'40'}px 0;color:var(--muted)">Panier vide<br><br><button class="btn-p" style="margin-top:8px" onclick="${forDr?'closeDr();':''}show('products')">Voir le catalogue</button></div>`;
+  return cart.map(i=>{
+    const kids=i.isKids||false;
+    const k=`${i.id},'${i.size||''}','${i.color||''}',${kids}`;
+    const mt=[i.cat,i.size?'Taille '+i.size:'',i.color||'',kids?'Junior':''].filter(Boolean).join(' · ');
+    return`<div class="ci"><div class="ci-img">${i.img?`<img src='${i.img}' style='width:100%;height:100%;object-fit:cover'>`:''}</div><div style="flex:1"><div class="ci-nm">${i.name}</div><div class="ci-mt">${mt}</div><div class="qc"><button class="qb" onclick="chQty(${k},-1)">−</button><input class="qn" value="${i.qty}" readonly><button class="qb" onclick="chQty(${k},1)">+</button></div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span class="ci-pr">${(i.price*i.qty).toFixed(2).replace('.',',')} €</span><button class="ci-rm" onclick="removeI(${k})">🗑</button></div></div>`;
+  }).join('');
+}
+function renderCartS(){document.getElementById('cartCont').innerHTML=ciHTML();}
+function renderDr(){const el=document.getElementById('drItems');if(el)el.innerHTML=ciHTML(true);}
+
+/* ══════════════════════════════════════════════
+   DRAWER
+══════════════════════════════════════════════ */
+function openDrawer(){renderDr();syncTotals();document.getElementById('dOv').classList.add('open');}
+function closeDr(){document.getElementById('dOv').classList.remove('open');}
+function closeDrBg(e){if(e.target===e.currentTarget)closeDr();}
+
+/* ══════════════════════════════════════════════
+   SEARCH
+══════════════════════════════════════════════ */
+function toggleSearch(){const i=document.getElementById('srchInp');i.classList.toggle('open');if(i.classList.contains('open'))i.focus();else{i.value='';closeSrch();}}
+function handleSearch(v){
+  if(!v.trim()){closeSrch();return;}
+  const all=[...products,...products2];
+  const r=all.filter(p=>p.name.toLowerCase().includes(v.toLowerCase())||p.cat.toLowerCase().includes(v.toLowerCase()));
+  document.getElementById('srchRes').innerHTML=r.map(p=>`<div class="sri" onclick="openM(${p.id},${products2.includes(p)});closeSrch()">${p.img?`<img src='${p.img}' style='width:26px;height:26px;border-radius:3px;object-fit:cover'>`:''}<div><div class="srn">${p.name}</div><div class="srp">${p.price.toFixed(2).replace('.',',')} €</div></div></div>`).join('')||'<div style="color:var(--muted);font-size:13px">Aucun résultat</div>';
+  document.getElementById('srchDrop').classList.add('open');
+}
+function closeSrch(){document.getElementById('srchDrop').classList.remove('open');}
+
+/* ══════════════════════════════════════════════
+   STRIPE
+══════════════════════════════════════════════ */
+const STRIPE_PUBLIC_KEY='pk_test_51Tfz8X3CTnYQLE6mP7ZguAAOkzENkxvp7t3xfLDmBJE877at26mlSNPaUO7FYnTkctmw5AcODolgneRShYtdsw9b00pWvlVdJi';
+let stripe=null,stripeElements=null,stripeCard=null;
+function initStripe(){
+  if(!stripe&&typeof Stripe!=='undefined'){
+    stripe=Stripe(STRIPE_PUBLIC_KEY);
+    stripeElements=stripe.elements({appearance:{theme:'night',variables:{colorPrimary:'#C9A84C',colorBackground:'#181818',colorText:'#EEEEEE',colorDanger:'#C0392B',fontFamily:'Barlow, sans-serif',borderRadius:'4px'}}});
+    stripeCard=stripeElements.create('card',{style:{base:{color:'#EEEEEE',fontFamily:'Barlow, sans-serif',fontSize:'15px','::placeholder':{color:'#777'}}},hidePostalCode:true});
+    stripeCard.mount('#stripe-card-element');
+    stripeCard.on('change',e=>{document.getElementById('stripe-card-errors').textContent=e.error?e.error.message:'';});
+  }
+}
+async function stripeConfirmPay(){
+  if(!cart.length){showToast('❌','Votre panier est vide');return;}
+  if(STRIPE_PUBLIC_KEY==='pk_live_VOTRE_CLE_PUBLIQUE_ICI'){showToast('⚠️','Ajoutez votre clé Stripe dans le code');return;}
+  const name=document.getElementById('stripe-name')?.value;
+  const email=document.getElementById('stripe-email')?.value;
+  if(!name||!email){showToast('⚠️','Renseignez votre nom et email');return;}
+  const btn=document.getElementById('stripe-pay-btn');
+  btn.disabled=true;btn.textContent='⏳ Traitement...';
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const total=Math.round(sub*(1-promoDiscount)*100);
+  const articles=cart.map(i=>i.name+(i.size?' '+i.size:'')).join(', ');
+  try{
+    const res=await fetch('/api/create-payment-intent',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({amount:total,currency:'eur',email,name,articles})});
+    const data=await res.json();
+    if(!data.clientSecret)throw new Error(data.error||'Erreur serveur');
+    const result=await stripe.confirmCardPayment(data.clientSecret,{payment_method:{card:stripeCard,billing_details:{name,email}}});
+    if(result.error){document.getElementById('stripe-card-errors').textContent=result.error.message;showToast('❌',result.error.message);}
+    else if(result.paymentIntent.status==='succeeded'){
+      addOrderToMember(result.paymentIntent.id,total/100);
+      showToast('✅','Paiement confirmé ! 🎉');
+      cart=[];promoDiscount=0;syncCart();
+      setTimeout(()=>show('inscription'),1800);
+    }
+  }catch(e){showToast('❌','Erreur : '+e.message);}
+  btn.disabled=false;btn.innerHTML='🔒 Payer — <span id="payAmt"></span>';syncTotals();
+}
+
+/* ══════════════════════════════════════════════
+   MEMBRE / AUTH — VRAIE API + JWT
+══════════════════════════════════════════════ */
+let currentUser=null;
+const TOKEN_KEY='bushido_jwt';
+
+function getToken(){return localStorage.getItem(TOKEN_KEY);}
+function saveToken(t){localStorage.setItem(TOKEN_KEY,t);}
+function clearToken(){localStorage.removeItem(TOKEN_KEY);}
+
+function switchTab(t){['login','register'].forEach(x=>{document.getElementById('tab-'+x).classList.toggle('on',x===t);document.getElementById('form-'+x).classList.toggle('on',x===t);});}
+function tp(id){const el=document.getElementById(id);el.type=el.type==='password'?'text':'password';}
+
+async function loginUser(){
+  const email=document.getElementById('login-email')?.value?.trim();
+  const pw=document.getElementById('lp')?.value;
+  if(!email||!pw){showToast('⚠️','Renseignez email et mot de passe');return;}
+
+  const btn=document.querySelector('#form-login .btn-sub');
+  btn.disabled=true;btn.textContent='⏳ Connexion...';
+
+  try{
+    const r=await fetch('/api/auth/connexion',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,mot_de_passe:pw})
+    });
+    const data=await r.json();
+    if(!r.ok){showToast('❌',data.error||'Erreur');return;}
+    saveToken(data.token);
+    currentUser=data.client;
+    showMemberDashboard(data.client);
+    showToast('✅','Bienvenue, '+data.client.prenom+' !');
+    document.getElementById('btn-cnx-hdr').textContent='Mon espace';
+  }catch(e){showToast('❌','Erreur de connexion au serveur');}
+  finally{btn.disabled=false;btn.textContent='Se connecter';}
+}
+
+async function registerUser(){
+  const fn=document.getElementById('reg-fn')?.value?.trim();
+  const ln=document.getElementById('reg-ln')?.value?.trim();
+  const email=document.getElementById('reg-em')?.value?.trim();
+  const pw=document.getElementById('reg-pw')?.value;
+  const disc=document.getElementById('reg-disc')?.value;
+  const cgv=document.getElementById('cgv')?.checked;
+  const errEl=document.getElementById('reg-err');
+  errEl.style.display='none';
+
+  if(!fn||!ln){errEl.textContent='Prénom et nom requis';errEl.style.display='block';return;}
+  if(!email||!email.includes('@')){errEl.textContent='Email invalide';errEl.style.display='block';return;}
+  if(!pw||pw.length<8){errEl.textContent='Mot de passe : 8 caractères minimum';errEl.style.display='block';return;}
+  if(!cgv){errEl.textContent='Veuillez accepter les CGV';errEl.style.display='block';return;}
+
+  const btn=document.querySelector('#form-register .btn-sub');
+  btn.disabled=true;btn.textContent='⏳ Création...';
+
+  try{
+    const r=await fetch('/api/auth/inscription',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prenom:fn,nom:ln,email,mot_de_passe:pw,discipline:disc||''})
+    });
+    const data=await r.json();
+    if(!r.ok){errEl.textContent=data.error||'Erreur';errEl.style.display='block';return;}
+    saveToken(data.token);
+    currentUser=data.client;
+    showMemberDashboard(data.client);
+    showToast('🎉','Bienvenue '+fn+' !');
+    document.getElementById('btn-cnx-hdr').textContent='Mon espace';
+  }catch(e){showToast('❌','Erreur de connexion au serveur');}
+  finally{btn.disabled=false;btn.textContent='Créer mon compte';}
+}
+
+function logoutUser(){
+  currentUser=null;
+  clearToken();
+  document.getElementById('memberView').style.display='none';
+  document.getElementById('authView').style.display='block';
+  document.getElementById('btn-cnx-hdr').textContent='Connexion';
+  showToast('👋','Vous êtes déconnecté');
+}
+
+function showMemberDashboard(u){
+  document.getElementById('authView').style.display='none';
+  document.getElementById('memberView').style.display='block';
+  document.getElementById('memberName').textContent=((u.prenom||'')+' '+(u.nom||'')).toUpperCase();
+  document.getElementById('memberEmail').textContent=u.email;
+  document.getElementById('memberAvatar').textContent=u.avatar||'🥋';
+  document.getElementById('mStatOrders').textContent=(u.commandes||[]).length;
+  document.getElementById('mStatTotal').textContent=(parseFloat(u.total_depense)||0).toFixed(2).replace('.',',')+'€';
+  document.getElementById('mStatDisc').textContent=u.discipline||'—';
+  document.getElementById('mStatPoints').textContent=u.points||0;
+  const badge=document.getElementById('memberBadge');
+  const tot=parseFloat(u.total_depense)||0;
+  if(tot>500){badge.textContent='⭐ VIP';}else if((u.commandes||[]).length>2){badge.textContent='✅ RÉGULIER';}else{badge.textContent='🆕 NOUVEAU';}
+  document.getElementById('prof-fn').value=u.prenom||'';
+  document.getElementById('prof-ln').value=u.nom||'';
+  document.getElementById('prof-em').value=u.email||'';
+  document.getElementById('prof-tel').value=u.telephone||'';
+  document.getElementById('prof-addr').value=u.adresse||'';
+  document.getElementById('prof-cp').value=u.code_postal||'';
+  document.getElementById('prof-ville').value=u.ville||'';
+  if(u.discipline){try{document.getElementById('prof-disc').value=u.discipline;}catch(e){}}
+  renderMemberOrders(u);
+  mTab('orders');
+}
+
+function mTab(t){['orders','profile','fav'].forEach(x=>{document.getElementById('mtab-'+x).classList.toggle('on',x===t);document.getElementById('mpanel-'+x).style.display=x===t?'block':'none';});if(t==='fav')renderMemberFavs();}
+
+function renderMemberOrders(u){
+  const el=document.getElementById('memberOrders');
+  const orders=u.commandes||[];
+  if(!orders.length){el.innerHTML=`<div style="text-align:center;padding:40px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:2px">AUCUNE COMMANDE<br><button class="btn-p" style="margin-top:16px;font-size:12px;padding:10px 24px" onclick="show('products')">Voir le catalogue</button></div>`;return;}
+  el.innerHTML=orders.map(o=>`<div class="order-card"><div><div class="order-id">#${o.stripe_id?o.stripe_id.slice(-8).toUpperCase():o.id}</div><div class="order-date">${new Date(o.created_at).toLocaleDateString('fr-FR')}</div><div class="order-items">${o.articles||'Commande'}</div></div><div style="text-align:right"><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);margin-bottom:6px">${parseFloat(o.montant||0).toFixed(2).replace('.',',')} €</div><span class="order-status ${o.statut==='Livré'?'os-delivered':o.statut==='Expédié'?'os-shipped':'os-processing'}">${o.statut}</span></div></div>`).join('');
+}
+
+function renderMemberFavs(){const favProds=[...products,...products2].filter(p=>liked.has(p.id));const el=document.getElementById('memberFavGrid');if(!favProds.length){el.innerHTML=`<div style="color:var(--muted);padding:40px;text-align:center">AUCUN FAVORI</div>`;return;}el.innerHTML=favProds.map(p=>products2.includes(p)?cHTML2(p):cHTML(p)).join('');}
+
+async function saveProfile(){
+  if(!currentUser){showToast('⚠️',"Connectez-vous d'abord");return;}
+  const body={
+    prenom:document.getElementById('prof-fn').value,
+    nom:document.getElementById('prof-ln').value,
+    telephone:document.getElementById('prof-tel').value,
+    adresse:document.getElementById('prof-addr').value,
+    code_postal:document.getElementById('prof-cp').value,
+    ville:document.getElementById('prof-ville').value,
+    discipline:document.getElementById('prof-disc').value,
+  };
+  try{
+    const r=await fetch('/api/profil',{
+      method:'PUT',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+getToken()},
+      body:JSON.stringify(body)
+    });
+    const data=await r.json();
+    if(!r.ok){showToast('❌',data.error||'Erreur');return;}
+    currentUser={...currentUser,...data};
+    document.getElementById('memberName').textContent=((data.prenom)+' '+(data.nom)).toUpperCase();
+    showToast('✅','Profil mis à jour !');
+  }catch(e){showToast('❌','Erreur serveur');}
+}
+
+function addOrderToMember(paymentId,total){
+  if(!currentUser)return;
+  const articles=cart.map(i=>i.name+(i.size?' '+i.size:'')).join(', ');
+  // La commande est sauvegardée automatiquement via le webhook Stripe
+  // On met à jour juste l'affichage local
+  const order={stripe_id:paymentId,created_at:new Date(),articles,montant:total,statut:'En traitement'};
+  if(!currentUser.commandes)currentUser.commandes=[];
+  currentUser.commandes.unshift(order);
+  currentUser.total_depense=(parseFloat(currentUser.total_depense)||0)+total;
+  showMemberDashboard(currentUser);
+}
+
+/* ══════════════════════════════════════════════
+   PAIEMENT
+══════════════════════════════════════════════ */
+function selMethod(m,el){curMethod=m;document.querySelectorAll('.pmth').forEach(b=>b.classList.remove('on'));el.classList.add('on');document.querySelectorAll('.pay-panel').forEach(p=>p.classList.remove('on'));document.getElementById('panel-'+m).classList.add('on');if(m==='visa')setTimeout(initStripe,100);}
+function buildPayRec(){const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);const tot=sub*(1-promoDiscount);const fmt=v=>v.toFixed(2).replace('.',',')+' €';const items=cart.map(i=>`<div class="or-i"><span>${i.name}${i.size?' ('+i.size+')':''} ×${i.qty}</span><span>${(i.price*i.qty).toFixed(2).replace('.',',')} €</span></div>`).join('');document.getElementById('payRecap').innerHTML=`<div class="or-title">VOTRE COMMANDE</div>${items||'<div class="or-i"><span style="color:var(--muted)">Panier vide</span></div>'}<div class="or-tot"><span>Total</span><span class="amt">${fmt(tot)}</span></div>`;syncTotals();setTimeout(initStripe,200);if(currentUser){const em=document.getElementById('stripe-email');const nm=document.getElementById('stripe-name');if(em)em.value=currentUser.email;if(nm)nm.value=((currentUser.prenom||'')+(currentUser.nom?' '+currentUser.nom:'')).toUpperCase();}}
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+function showToast(ico,msg){const t=document.getElementById('toast');document.getElementById('tIco').textContent=ico;document.getElementById('tMsg').textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3200);}
+</script>
+</body>
+</html>
