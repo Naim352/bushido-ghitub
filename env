@@ -1,0 +1,25 @@
+# ══════════════════════════════════════════════
+# BUSHIDO STORE — Variables d'environnement
+# ══════════════════════════════════════════════
+
+# 🔴 OBLIGATOIRE — Copie cette valeur depuis Railway :
+# Ton projet Railway → service PostgreSQL → onglet Variables → DATABASE_URL
+DATABASE_URL=COLLE_ICI_TA_DATABASE_URL_RAILWAY
+
+# 🔴 OBLIGATOIRE — Clé secrète pour les tokens de connexion
+JWT_SECRET=bushido_secret_2024
+
+# 🔴 OBLIGATOIRE — URL de ton site sur Railway (ex: https://bushido-store.up.railway.app)
+FRONTEND_URL=COLLE_ICI_URL_DE_TON_SITE_RAILWAY
+
+# 🟡 Stripe — tes clés depuis dashboard.stripe.com
+STRIPE_SECRET_KEY=sk_test_XXXXX
+STRIPE_WEBHOOK_SECRET=whsec_XXXXX
+
+# 🟡 Admin — pour accéder à /api/admin/clients
+ADMIN_PASSWORD=tonmotdepasseadmin
+ADMIN_EMAIL=tonemail@gmail.com
+
+# 🟡 Gmail — pour envoyer des emails automatiques
+GMAIL_USER=tonemail@gmail.com
+GMAIL_APP_PASSWORD=XXXX XXXX XXXX XXXX
